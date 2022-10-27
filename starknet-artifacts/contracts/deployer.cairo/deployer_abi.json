@@ -1,0 +1,39 @@
+[
+    {
+        "data": [
+            {
+                "name": "contract_address",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "contract_deployed",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "class_hash",
+                "type": "felt"
+            }
+        ],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "params_len",
+                "type": "felt"
+            },
+            {
+                "name": "params",
+                "type": "felt*"
+            }
+        ],
+        "name": "deploy_contract",
+        "outputs": [],
+        "type": "function"
+    }
+]

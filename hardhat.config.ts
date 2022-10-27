@@ -1,11 +1,11 @@
 import { HardhatUserConfig } from "hardhat/types";
 import "@shardlabs/starknet-hardhat-plugin";
 
-module.exports = {
-  solidity: "0.8.17",
-};
+// module.exports = {
+//   solidity: "0.8.17",
+// };
 const config: HardhatUserConfig = {
-  solidity: '0.8.1',
+  solidity: '0.8.17',
   starknet: {
     // dockerizedVersion: "0.8.2", // alternatively choose one of the two venv options below
     // uses (my-venv) defined by `python -m venv path/to/my-venv`
@@ -13,7 +13,8 @@ const config: HardhatUserConfig = {
 
     // uses the currently active Python environment (hopefully with available Starknet commands!)
     venv: "active",
-    network: "alpha",
+    //network: "alpha",
+    network: "devnet",
     wallets: {
       OpenZeppelin: {
         accountName: "OpenZeppelin",
@@ -28,8 +29,9 @@ const config: HardhatUserConfig = {
     },
     integratedDevnet: {
       url: "http://127.0.0.1:5050",
-      venv: "active",
+      venv: "active"
       //dockerizedVersion: "0.2.2"
+
     },
     hardhat: {}
   },
