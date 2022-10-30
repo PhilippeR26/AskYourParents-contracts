@@ -1,13 +1,13 @@
-//
 // SPDX-License-Identifier: MIT
-// Forked from OpenZeppelin Contracts for Cairo v0.4.0 (account/IChildrenAccount.cairo)
+// OpenZeppelin Contracts for Cairo v0.5.0 (account/IAccount.cairo)
 
 %lang starknet
 
-from ChildrenAccount.library import AccountCallArray
+from openzeppelin.account.library import AccountCallArray
 
 @contract_interface
-namespace IChildrenAccount {
+namespace IAccount {
+
     func supportsInterface(interfaceId: felt) -> (success: felt) {
     }
 

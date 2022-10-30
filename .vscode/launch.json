@@ -4,15 +4,64 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Build Project",
+            "name": "TS Project",
             "program": "${workspaceFolder}/src/deployECU.ts",
-            "preLaunchTask": "npm: build",
+            "preLaunchTask": "tsc: build - tsconfig.json",
             "sourceMaps": true,
             "smartStep": true,
             "internalConsoleOptions": "openOnSessionStart",
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "hardhat test testnet",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
+            "args": [
+                "test",
+                "--network",
+                "devnet"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "cwd": "${workspaceFolder}/packages/hardhat"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "npx hardhat ETH localnet",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
+            "args": [
+                "node",
+                "--verbose"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "npx hardhat RUN starknet",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
+            "args": [
+                "run",
+                "--verbose",
+                "${workspaceFolder}/src/deployECU.ts"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src",
         }
     ]
 }

@@ -1,9 +1,8 @@
-import { starknet } from "hardhat";
-import env from "hardhat";
 import type { StringMap } from "@shardlabs/starknet-hardhat-plugin/dist/src/types";
 import { Uint256, bnToUint256 } from "starknet/dist/utils/uint256";
-import { TransactionReceipt } from "hardhat/types";
 import { toBN, toHex } from "starknet/dist/utils/number";
+import { starknet } from "hardhat";
+import env from "hardhat";
 
 async function main() {
     // Recover the network name defined in the config file
@@ -46,8 +45,9 @@ async function main() {
         constructorECU
     );
     const deploymentHash = await accountParent.invoke(deployer, "deploy_contract", constructorECU, { maxFee: estimatedFee.amount * 2n });
-    const receipt: TransactionReceipt = await starknet.getTransactionReceipt(deploymentHash);
-    const deploymentEvent = receipt.events.filter(i => i.from_address === deployerAddress)[0];//catch first event emits by the ECU deployer
+    // recover ECU instance address
+    const receipt = await starknet.getTransactionReceipt(deploymentHash);
+    const deploymentEvent = receipt.events.filter(i => i.from_address === deployerAddress)[0];//catch first event emited by the ECU deployer
     const ECUdeploymentAddress = deploymentEvent.data[0];
     const contractECU = contractFactoryECU.getContractAt(ECUdeploymentAddress);
     console.log("ERC20 ECU instance deployed to:", contractECU.address, "\ndeployment completed with success");

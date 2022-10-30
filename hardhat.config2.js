@@ -1,9 +1,6 @@
-import { HardhatUserConfig } from "hardhat/types";
-import "@shardlabs/starknet-hardhat-plugin";
-// module.exports = {
-//   solidity: "0.8.17",
-// };
-const config: HardhatUserConfig = {
+require("@shardlabs/starknet-hardhat-plugin");
+
+module.exports = {
   solidity: '0.8.17',
   starknet: {
     // dockerizedVersion: "0.8.2", // alternatively choose one of the two venv options below
@@ -37,5 +34,3 @@ const config: HardhatUserConfig = {
     hardhat: {}
   },
 };
-
-export default config;

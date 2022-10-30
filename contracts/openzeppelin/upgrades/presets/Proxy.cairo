@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts for Cairo v0.4.0 (upgrades/presets/Proxy.cairo)
+// OpenZeppelin Contracts for Cairo v0.5.0 (upgrades/presets/Proxy.cairo)
 
 %lang starknet
 
@@ -20,7 +20,7 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
 ) {
     alloc_locals;
     Proxy._set_implementation_hash(implementation_hash);
-    
+
     if (selector != 0) {
         // Initialize proxy from implementation
         library_call(
