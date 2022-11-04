@@ -14,7 +14,7 @@ const config: HardhatUserConfig = {
     venv: "active",
     recompile: false,
     //network: "alpha" or "integrated-devnet" or "devnet" or "integratedDevnet",
-    network: "devnet",
+    network: "alpha",
     wallets: {
       OpenZeppelin: {
         accountName: "OpenZeppelin",

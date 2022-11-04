@@ -6,17 +6,14 @@
 from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin, BitwiseBuiltin
 from starkware.starknet.common.syscalls import get_tx_info
 
-from openzeppelin.account.library import Account, AccountCallArray
-
+from AAcontract.ChildrenAA.v1_0_0.library import Account, AccountCallArray
 
 //
 // Constructor
 //
 
 @constructor
-func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-    publicKey: felt
-) {
+func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(publicKey: felt) {
     Account.initializer(publicKey);
     return ();
 }

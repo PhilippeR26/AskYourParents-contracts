@@ -17,18 +17,19 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "hardhat test testnet",
+            "name": "npx hardhat TEST starknet",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
             "args": [
                 "test",
-                "--network",
-                "devnet"
+                "--verbose",
+                "${workspaceFolder}/scripts/deployECU.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
-            "cwd": "${workspaceFolder}/packages/hardhat"
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/test",
         },
         {
             "type": "node",
@@ -57,11 +58,11 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/src/deployECU.ts"
+                "${workspaceFolder}/scripts/2.deployOZwallets.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}/scripts",
         }
     ]
 }

@@ -13,16 +13,26 @@
     {
         "inputs": [
             {
-                "name": "class_hash",
+                "name": "clash_hash",
                 "type": "felt"
             }
         ],
-        "name": "constructor",
-        "outputs": [],
-        "type": "constructor"
+        "name": "view_salt",
+        "outputs": [
+            {
+                "name": "salt",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
+            {
+                "name": "class_hash",
+                "type": "felt"
+            },
             {
                 "name": "params_len",
                 "type": "felt"
