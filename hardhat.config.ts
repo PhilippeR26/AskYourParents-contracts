@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/types";
 import "@shardlabs/starknet-hardhat-plugin";
+// import "src/HHstarknetAbstractAccount/HHaccountA";
 // module.exports = {
 //   solidity: "0.8.17",
 // };
@@ -14,7 +15,7 @@ const config: HardhatUserConfig = {
     venv: "active",
     recompile: false,
     //network: "alpha" or "integrated-devnet" or "devnet" or "integratedDevnet",
-    network: "alpha",
+    network: "alpha-goerli-2",
     wallets: {
       OpenZeppelin: {
         accountName: "OpenZeppelin",
@@ -33,6 +34,9 @@ const config: HardhatUserConfig = {
       venv: "active"
       //dockerizedVersion: "0.2.2"
 
+    },
+    "alpha-goerli-2": {
+      url: "https://alpha4-2.starknet.io"
     },
     hardhat: {}
   },

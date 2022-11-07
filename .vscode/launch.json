@@ -58,7 +58,7 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/2.deployOZwallets.ts"
+                "${workspaceFolder}/scripts/3.deployDeployer.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",

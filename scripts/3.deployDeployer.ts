@@ -3,43 +3,29 @@
 // 
 import { starknet } from "hardhat";
 import hre from "hardhat";
-import { adaptAddress, ensureEnvVar } from "../src/util";
+import { adaptAddress } from "../src/util";
 import LogC from "../src/logColors";
-import { Account } from "hardhat/types";
-import { addrParentAlpha } from "../src/const";
+import { StarknetContract } from "hardhat/types";
 
 async function main() {
     // Recover the starknet:network name defined in the hardhat.config.ts file
     const whichNetwork = hre.config.starknet.network;
-    console.log("\nworking in network :", LogC.fg.yellow, whichNetwork, LogC.reset);
-    let accountParent: Account;
+    console.log("\nworking in network :", LogC.fg.yellow, whichNetwork, LogC.reset, "\nDeployement of myUniversalDeployer in progress...");
+    // deploy .... UniversalDeployer !
+    const deployerFactory = await starknet.getContractFactory("deployer/myUniversalDeployer");
+    let deployer: StarknetContract;
     switch (whichNetwork) {
         case "devnet":
-            // Recovery of data of predeployed wallets in devnet
-            const ListOfWallet = await starknet.devnet.getPredeployedAccounts();
-            // Define Parent Wallet.
-            accountParent = await starknet.getAccountFromAddress(
-                ListOfWallet[0].address,
-                ListOfWallet[0].private_key,
-                "OpenZeppelin"
-            );
+            deployer = await deployerFactory.deploy({}, { salt: "0x00" });
             break;
-        case "alpha"://testnet goerli ETH
-            // Recovery of data of Parent predeployed wallet in Alpha testnet
-            accountParent = await starknet.getAccountFromAddress(
-                addrParentAlpha,
-                ensureEnvVar("OZ_PARENT_ACCOUNT_PRIVATE_KEY"),
-                "OpenZeppelin"
-            );
+        case "alpha": case "alpha-goerli-2"://testnet goerli ETH
+            deployer = await deployerFactory.deploy({});
             break;
         default:
             throw new Error("IntegratedDevnet and mainnet not authorized for this script!");
     }
-    // deploy .... UniversalDeployer !
-    const deployerFactory = await starknet.getContractFactory("deployer/myUniversalDeployer");
-    const deployer = await deployerFactory.deploy({}, { salt: "0x00" });
     const deployerAddress = adaptAddress(deployer.address); // remove 0s after 0x if necessary, to have no problem with Events filter.
-    console.log("✅ ECU deployer address=", deployerAddress, "\nCopy/Paste this address in src/const.ts, in varName ", whichNetwork === "devnet" ? "addrDeployerDevnet" : "addrDeployerAlpha");
+    console.log("✅ myUniversalDeployer address=", deployerAddress, "\nCopy/Paste this address in src/const.ts, in varName", whichNetwork === "devnet" ? "addrDeployerDevnet" : whichNetwork === "alpha" ? "addrDeployerAlpha" : "addrDeployerAlpha2");
 }
 
 main()

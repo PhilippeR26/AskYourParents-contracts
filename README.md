@@ -1,7 +1,7 @@
 #  💰 AskYourParents-contracts 💰 
 ## STARKNET CAIRO contracts for AskYourParents DAPP
 
-DAPP source code available [here](https://github.com/PhilippeR26/AskYourParents-UI) 
+DAPP UI source code available [here](https://github.com/PhilippeR26/AskYourParents-UI) 
 
 ⚠️Attention⚠️ : highly experimental DAPP. Use at your own risks.
 
@@ -29,7 +29,7 @@ A Game wallet can access to the Children wallet with rules defined by the Parent
 - a deployed Children abstracted wallet.
 
 ## 📦 Installation  📦
- Push the Github project to your computer.
+ Pull the Github project to your computer.
  Use `cd AskYourParents-contracts` to go to the root of the project.
  Run `npm install` in this directory.
 
@@ -41,7 +41,7 @@ A Game wallet can access to the Children wallet with rules defined by the Parent
 
 ### Install in devnet
 Open a console, and launch the devnet `starknet-devnet --seed 0`. It will launch a local Starknet network, and pre-deploy some accounts.
-In the `scripts directory`, you have 4 scripts to initialise the devnet.
+In the `scripts` directory, you have 4 scripts to initialise the devnet.
 In a second terminal :
 ```
 npx hardhat run scripts/1.compileCairo.ts
@@ -51,7 +51,9 @@ npx hardhat run scripts/5.deployCWallet.ts
 ```
 
 ### Install in Alpha Goerli testnet
-In the `scripts directory`, you have 5 scripts to initialize the devnet.
+All the contracts are already deployed on Alpha Testnet ; their address are in `/src.const.ts`.The hereunder instructions are usefull if you have modified the cairo contracts.
+
+In the `scripts directory`, you have 5 scripts to initialize the testnet.
 In a second terminal :
 ```
 npx hardhat run scripts/1.compileCairo.ts
@@ -60,7 +62,7 @@ npx hardhat run scripts/3.deployDeployer.ts
 npx hardhat run scripts/4.deployECU.ts
 npx hardhat run scripts/5.deployCWallet.ts
 ```
-Each time, follow carefully 🔍 the instructions ()
+Each time, follow carefully 🔍 the instructions (copy/paste of addresses, funding of wallets, ...).
 
 ##  🚀 Start the test 🚀  🎆 ↘️  💩
 
