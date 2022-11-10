@@ -58,7 +58,7 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/3.deployDeployer.ts"
+                "${workspaceFolder}/scripts/testAA.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",

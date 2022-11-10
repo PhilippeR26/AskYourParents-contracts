@@ -1,21 +1,28 @@
 
 
+import path from "path";
 import { Account } from "@shardlabs/starknet-hardhat-plugin/dist/src/account";
-import { StarknetContract } from "@shardlabs/starknet-hardhat-plugin/dist/src/types";
+import { DeployAccountOptions, StarknetContract } from "@shardlabs/starknet-hardhat-plugin/dist/src/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { TransactionHashPrefix, TRANSACTION_VERSION } from "@shardlabs/starknet-hardhat-plugin/dist/src/constants";
 import { Call, hash, RawCalldata } from "starknet";
 import { StarknetChainId } from "starknet/constants";
 import { BigNumberish, toBN } from "starknet/utils/number";
+import { generateKeys, handleAccountContractArtifacts, signMultiCall } from "@shardlabs/starknet-hardhat-plugin/dist/src/account-utils";
+import * as ellipticCurve from "starknet/utils/ellipticCurve";
+import { StarknetPluginError } from "@shardlabs/starknet-hardhat-plugin/dist/src/starknet-plugin-error";
+import { handleAccountAAContractArtifacts } from "./accountAA-utils";
+import { ACCOUNTAA_CONTRACTS_DIR } from "./constantsAA";
 
 
+export { Account };
 /**
- * Wrapper for the OpenZeppelin implementation of an Account
+ * Wrapper for your Account abstraction implementation 
  */
-export class OZaccountA extends Account {
-    static readonly ACCOUNT_TYPE_NAME = "OZAccountAbstract";
-    static readonly ACCOUNT_ARTIFACTS_NAME = "Account";
-    static readonly VERSION = "1_0_0";
+export class OZaccountAA extends Account {
+    //static readonly ACCOUNT_TYPE_NAME = "ChildrenAA";
+    static readonly ACCOUNT_ARTIFACTS_NAME = "ChildrenAccount";
+    static readonly VERSION = "v1_0_0";
 
     constructor(
         starknetContract: StarknetContract,
@@ -70,17 +77,19 @@ export class OZaccountA extends Account {
     protected getSignatures(messageHash: string): bigint[] {
         return signMultiCall(this.publicKey, this.keyPair, messageHash);
     }
-
-    static async deployFromABI(
+    // ***********
+    static async deployAAfromABI(
         hre: HardhatRuntimeEnvironment,
+        AAtype: string,
         options: DeployAccountOptions = {}
-    ): Promise<OpenZeppelinAccount> {
-        const contractPath = await handleAccountContractArtifacts(
-            OpenZeppelinAccount.ACCOUNT_TYPE_NAME,
-            OpenZeppelinAccount.ACCOUNT_ARTIFACTS_NAME,
-            OpenZeppelinAccount.VERSION,
+    ): Promise<OZaccountAA> {
+        // 
+        const contractPath = await handleAccountAAContractArtifacts(
+            AAtype,
+            OZaccountAA.ACCOUNT_ARTIFACTS_NAME,
+            OZaccountAA.VERSION,
             hre
-        );
+        ); // Compile and Check origin path of files
 
         const signer = generateKeys(options.privateKey);
 
@@ -90,19 +99,25 @@ export class OZaccountA extends Account {
             options
         );
 
-        return new OpenZeppelinAccount(contract, signer.privateKey, hre);
+        return new OZaccountAA(contract, signer.privateKey, hre);
     }
-
-    static async getAccountFromAddress(
+    // *******************
+    static async getAccountAAfromAddress(
         address: string,
         privateKey: string,
+        AAtype: string,
         hre: HardhatRuntimeEnvironment
-    ): Promise<OpenZeppelinAccount> {
-        const contractPath = await handleAccountContractArtifacts(
-            OpenZeppelinAccount.ACCOUNT_TYPE_NAME,
-            OpenZeppelinAccount.ACCOUNT_ARTIFACTS_NAME,
-            OpenZeppelinAccount.VERSION,
-            hre
+    ): Promise<OZaccountAA> {
+        const starknetSourcesPath = hre.config.paths.starknetSources ?? path.join(__dirname, "..", "..", "contracts");
+        const RelativePathSource = path.relative(hre.config.paths.root, starknetSourcesPath);
+        const contractBase = OZaccountAA.ACCOUNT_ARTIFACTS_NAME + ".cairo";
+        const contractPath = path.join(
+            hre.config.paths.starknetArtifacts,
+            RelativePathSource,
+            ACCOUNTAA_CONTRACTS_DIR,
+            AAtype,
+            OZaccountAA.VERSION,
+            contractBase
         );
 
         const contractFactory = await hre.starknet.getContractFactory(contractPath);
@@ -119,7 +134,7 @@ export class OZaccountA extends Account {
             );
         }
 
-        return new OpenZeppelinAccount(contract, privateKey, hre);
+        return new OZaccountAA(contract, privateKey, hre);
     }
 
     protected hasRawOutput(): boolean {

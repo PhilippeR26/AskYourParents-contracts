@@ -1,6 +1,8 @@
 import { HardhatUserConfig } from "hardhat/types";
 import "@shardlabs/starknet-hardhat-plugin";
-// import "src/HHstarknetAbstractAccount/HHaccountA";
+import "./src/HHstarknetAbstractAccount";
+
+
 // module.exports = {
 //   solidity: "0.8.17",
 // };
@@ -14,8 +16,8 @@ const config: HardhatUserConfig = {
     // uses the currently active Python environment (hopefully with available Starknet commands!)
     venv: "active",
     recompile: false,
-    //network: "alpha" or "integrated-devnet" or "devnet" or "integratedDevnet",
-    network: "alpha-goerli-2",
+    //network: "alpha" or "alpha-goerli-2" or "integrated-devnet" or "devnet" or "integratedDevnet",
+    network: "devnet",
     wallets: {
       OpenZeppelin: {
         accountName: "OpenZeppelin",

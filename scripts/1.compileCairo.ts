@@ -12,9 +12,8 @@ import hardhat from "hardhat";
 
 async function main() {
     await hardhat.run("starknet-compile", { paths: ["contracts/deployer/myUniversalDeployer.cairo", "contracts/openzeppelin/token/erc20/presets/ERC20Mintable.cairo"] });
-    await hardhat.run("starknet-compile", { paths: ["contracts/AAcontract/ChildrenAA/v1_0_0/ChildrenAccount.cairo"], disableHintValidation: true, accountContract: true });
+    await hardhat.run("starknet-compile", { paths: ["contracts/accountAA_contracts/ChildrenAA/v1_0_0/ChildrenAccount.cairo"], disableHintValidation: true, accountContract: true });
 }
-
 main()
     .then(() => process.exit(0))
     .catch((error) => {

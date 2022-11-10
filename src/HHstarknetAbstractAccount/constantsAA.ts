@@ -1,0 +1,1 @@
+export const ACCOUNTAA_CONTRACTS_DIR = "accountAA_contracts"

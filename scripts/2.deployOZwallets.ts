@@ -1,8 +1,7 @@
 // deployOZwallet.ts
 // deploy Parent and game wallets in Alpha testnet.
 // Automatically deployed in devnet.
-import { starknet } from "hardhat";
-import hre from "hardhat";
+import hre, { starknet } from "hardhat";
 import { adaptAddress } from "../src/util";
 import LogC from "../src/logColors";
 
