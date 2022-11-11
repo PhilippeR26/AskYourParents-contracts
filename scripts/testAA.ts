@@ -15,11 +15,11 @@ async function main() {
     const Test1Account = await AAccount.deployAccountAA("ChildrenAA");
     const Test1address = adaptAddress(Test1Account.address);
     console.log("✅ AAccount1 deployed at = " + LogC.fg.green + Test1address + LogC.reset);
-    console.log("  wallet private key = " + LogC.fg.green + Test1Account.privateKey + LogC.reset)
+    console.log("   wallet private key = " + LogC.fg.green + Test1Account.privateKey + LogC.reset)
     const Test2Account = await AAccount.getAccountAAfromAddress(Test1address, Test1Account.privateKey, "ChildrenAA");
     const Test2address = adaptAddress(Test2Account.address);
     console.log("\n✅ AAccount2 deployed at = " + LogC.fg.green + Test2address + LogC.reset);
-    console.log("  wallet private key=", + LogC.fg.green + Test2Account.privateKey + LogC.reset + '\n wallets should be the same.\n');
+    console.log("   wallet private key = " + LogC.fg.green + Test2Account.privateKey + LogC.reset + '\n wallets should be the same.\n');
 }
 
 

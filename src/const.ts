@@ -26,10 +26,10 @@ export const addrECUalpha: string = "0x7a50dbaeabe43b492f4e848970f6f6fcc3d0a23b8
 export const addrECUalpha2: string = "";
 
 // Address of Children account in local devnet :
-export const addrChildrenDevnet: string = "=0x04b567683919cfa7bef9573f74f34995e7bf65b96f59865fda7cfbdccdfdbebf";
+export const addrChildrenDevnet: string = "0x6d448dca2a23e502c8054ff00efa5effe9c1965de6b0d4bc573e17d9f6b21e6";
 // Address of Children account in Starknet Alpha 1&2 testnet :
-export const addrChildrenalpha: string = "=0x";
-export const addrChildrenAlpha2: string = "=0x";
+export const addrChildrenalpha: string = "0x62be1cdaf0bf1e2693ea336560fe3d75d34d2b0784f038ad64ae4e07cebe52a";
+export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";
 
 // ETH on alpha testnet : 
 export const addrETHtestnet: string = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
