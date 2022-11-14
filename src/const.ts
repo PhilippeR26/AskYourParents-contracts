@@ -1,6 +1,6 @@
 
 // Address of myUniversalDeployer in local starknet-devnet :
-export const addrDeployerDevnet: string = "0x4a9ae9a439f2388e967ba7ddc6ed61b7c18bc840b1b7ac6a2b711d626998603";
+export const addrDeployerDevnet: string = "0x786dc5f8738f5e0ef1d458a94c9d1e671b4028fa8c8a631f2a9370891c18f8e";
 // Address of myUniversalDeployer in starknet-alpha testnet :
 export const addrDeployerAlpha: string = "0x56aa440b1cbe73b5908286d602d666598d2aa3a6e109bf5a5d104e41bc5fce1";
 // Address of myUniversalDeployer in starknet-alpha 2 testnet :
@@ -20,13 +20,13 @@ export const addrGameAlpha2: string = "0x5bd66a2f2f321794936e96607522f740ca080df
 // Contract class hash of ECU contract :
 export const classHashECU: string = "0x71b11b60733f6a681dd69d6da9d707acc536d47eeab94d29a29d45f400b62d7";
 // Address of ECU in local starknet-devnet :
-export const addrECUdevnet: string = "0x448f3f2b1ca694ae67f63a938804553784094b7443d5744b4cb5677a3d2bc72";
+export const addrECUdevnet: string = "0x752516de1c266fb6f28f651e8372a9f7c00b10626de572cd32eefd4b8c2bf54";
 // Address of ECU in starknet-alpha 1&2 testnet :
 export const addrECUalpha: string = "0x7a50dbaeabe43b492f4e848970f6f6fcc3d0a23b8119683bc733d04e2918394";
-export const addrECUalpha2: string = "";
+export const addrECUalpha2: string = "";// waiting a way to feed ETH to Parent Account...😴
 
 // Address of Children account in local devnet :
-export const addrChildrenDevnet: string = "0x6d448dca2a23e502c8054ff00efa5effe9c1965de6b0d4bc573e17d9f6b21e6";
+export const addrChildrenDevnet: string = "0x5d394beb37793857054cb5837613291029b1f423aae91e64833c3d6d4b78c53";
 // Address of Children account in Starknet Alpha 1&2 testnet :
 export const addrChildrenalpha: string = "0x62be1cdaf0bf1e2693ea336560fe3d75d34d2b0784f038ad64ae4e07cebe52a";
 export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";

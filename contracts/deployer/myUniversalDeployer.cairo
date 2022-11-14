@@ -45,7 +45,10 @@ func deploy_contract{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check
         deploy_from_zero=TRUE,
     );
     salt.write(class_hash, _salt + 1);
-
+    // %{
+    //     print(f"*****_salt =  {ids._salt}")
+    //     print(f"**** contract_address = {ids.contract_address}")
+    // %}
     contract_deployed.emit(contract_address=contract_address);
     return ();
 }

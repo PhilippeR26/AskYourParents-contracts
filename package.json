@@ -4,6 +4,8 @@
   "description": "STARKNET CAIRO contracts for AskYourParents DAPP",
   "main": "index.js",
   "scripts": {
+    "devnet": "starknet-devnet --seed 0 2> /dev/null &",
+    "stop-devnet": "pkill starknet-devnet || /bin/true",
     "test": "npx hardhat --network localhost test"
   },
   "repository": {

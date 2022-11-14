@@ -5769,7 +5769,20 @@
                         "__main__.deploy_contract"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [],
+                    "hints": [
+                        {
+                            "location": {
+                                "end_col": 7,
+                                "end_line": 51,
+                                "input_file": {
+                                    "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
+                                },
+                                "start_col": 5,
+                                "start_line": 48
+                            },
+                            "n_prefix_newlines": 1
+                        }
+                    ],
                     "inst": {
                         "end_col": 34,
                         "end_line": 21,
@@ -5800,12 +5813,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 62,
-                                                        "end_line": 49,
+                                                        "end_line": 52,
                                                         "input_file": {
                                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 49
+                                                        "start_line": 52
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -5866,12 +5879,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 62,
-                                                        "end_line": 49,
+                                                        "end_line": 52,
                                                         "input_file": {
                                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 49
+                                                        "start_line": 52
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -5911,12 +5924,12 @@
                         "parent_location": [
                             {
                                 "end_col": 61,
-                                "end_line": 49,
+                                "end_line": 52,
                                 "input_file": {
                                     "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 49
+                                "start_line": 52
                             },
                             "While expanding the reference 'contract_address' in:"
                         ],
@@ -5934,12 +5947,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 62,
-                        "end_line": 49,
+                        "end_line": 52,
                         "input_file": {
                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 49
+                        "start_line": 52
                     }
                 },
                 "236": {
@@ -5966,7 +5979,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 62,
-                                        "end_line": 49,
+                                        "end_line": 52,
                                         "input_file": {
                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                         },
@@ -5980,12 +5993,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 15,
-                                                        "end_line": 50,
+                                                        "end_line": 53,
                                                         "input_file": {
                                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 50
+                                                        "start_line": 53
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -5995,7 +6008,7 @@
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 5,
-                                        "start_line": 49
+                                        "start_line": 52
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -6039,12 +6052,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 15,
-                                                "end_line": 50,
+                                                "end_line": 53,
                                                 "input_file": {
                                                     "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 50
+                                                "start_line": 53
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
@@ -6086,7 +6099,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 62,
-                                        "end_line": 49,
+                                        "end_line": 52,
                                         "input_file": {
                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                         },
@@ -6100,12 +6113,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 15,
-                                                        "end_line": 50,
+                                                        "end_line": 53,
                                                         "input_file": {
                                                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 50
+                                                        "start_line": 53
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -6115,7 +6128,7 @@
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 5,
-                                        "start_line": 49
+                                        "start_line": 52
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -6138,12 +6151,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 15,
-                        "end_line": 50,
+                        "end_line": 53,
                         "input_file": {
                             "filename": "/home/edmond/Documents/starknet/DAPP/AskYourParents-contracts/contracts/deployer/myUniversalDeployer.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 50
+                        "start_line": 53
                     }
                 },
                 "240": {
@@ -7416,6 +7429,26 @@
                     }
                 }
             ],
+            "231": [
+                {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deploy_contract"
+                    ],
+                    "code": "print(f\"*****_salt =  {ids._salt}\")\nprint(f\"**** contract_address = {ids.contract_address}\")",
+                    "flow_tracking_data": {
+                        "ap_tracking": {
+                            "group": 15,
+                            "offset": 133
+                        },
+                        "reference_ids": {
+                            "__main__.deploy_contract._salt": 10,
+                            "__main__.deploy_contract.contract_address": 11
+                        }
+                    }
+                }
+            ],
             "259": [
                 {
                     "accessible_scopes": [
@@ -7582,6 +7615,36 @@
             "__main__.deploy_contract.SIZEOF_LOCALS": {
                 "type": "const",
                 "value": 1
+            },
+            "__main__.deploy_contract._salt": {
+                "cairo_type": "felt",
+                "full_name": "__main__.deploy_contract._salt",
+                "references": [
+                    {
+                        "ap_tracking_data": {
+                            "group": 15,
+                            "offset": 62
+                        },
+                        "pc": 207,
+                        "value": "[cast(fp, felt*)]"
+                    }
+                ],
+                "type": "reference"
+            },
+            "__main__.deploy_contract.contract_address": {
+                "cairo_type": "felt",
+                "full_name": "__main__.deploy_contract.contract_address",
+                "references": [
+                    {
+                        "ap_tracking_data": {
+                            "group": 15,
+                            "offset": 73
+                        },
+                        "pc": 223,
+                        "value": "[cast(ap + (-1), felt*)]"
+                    }
+                ],
+                "type": "reference"
             },
             "__main__.salt": {
                 "type": "namespace"
@@ -9352,6 +9415,22 @@
                     },
                     "pc": 90,
                     "value": "[cast(fp + (-7), felt**)]"
+                },
+                {
+                    "ap_tracking_data": {
+                        "group": 15,
+                        "offset": 62
+                    },
+                    "pc": 207,
+                    "value": "[cast(fp, felt*)]"
+                },
+                {
+                    "ap_tracking_data": {
+                        "group": 15,
+                        "offset": 73
+                    },
+                    "pc": 223,
+                    "value": "[cast(ap + (-1), felt*)]"
                 }
             ]
         }

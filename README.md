@@ -69,11 +69,26 @@ Each time, follow carefully 🔍 the instructions (copy/paste of addresses, fund
 Open a new console, and use `npx hardhat test test/essai1.ts`. 
 
 ## debug
+### debug of typescript scripts (.ts) :
 If you use VSCODE, this project is configured to be able to debug the .ts files. You have just to edit the .vscode/launch.json file.
 - For scripts : in the `npx hardhat RUN starknet` item. Change the ts file name.
 - For tests : in the `npx hardhat TEST starknet` item. Change the ts file name.
 Put your beakpoints in the code (F9).
 to start : CTRL+SHIFT+D, select your config and press the play button (or F5).
+### debug of cairo files (.cairo) :
+Only in devnet, you can debugg some variables of your cairo contracts.
+Do not start devnet in a dedicated console. 
+- Edit your .cairo file this way :
+```
+%{
+    print(f"*****_salt =  {ids._salt}")
+    print(f"**** contract_address = {ids.contract_address}")
+%}
+```
+- In your console, type `npm run devnet`.
+- Launch your script in the same console ; for example : `npx hardhat run scripts/5.deployCWallet.ts`. You will see the debug message in this console.
+- When debug is ended, type `npm run stop-devnet`.
+- Remove or comment your debug commands in the cairo files (otherwhise will not work in alpha network).
 
 ## 📜 license
 MIT license.
