@@ -37,13 +37,14 @@ A Game wallet can access to the Children wallet with rules defined by the Parent
 
 
 
->Note : by default, the tests are in the local Devnet. You can also test in the Starknet Alpha Goerli testnet, by changing `network: "devnet"` to `network: "alpha"` in hardhat.config.ts, without launching starknet-devnet. Just be very patient 😴 with this network.
+>Note : by default, the tests are in the local Devnet. You can also test in the Starknet Alpha Goerli testnet, by changing `network: "devnet"` to `network: "alpha"` or `network: "alpha-goerli-2"` in hardhat.config.ts, without launching starknet-devnet. Just be very patient 😴 with alpha.
 
 ### Install in devnet
 Open a console, and launch the devnet `starknet-devnet --seed 0`. It will launch a local Starknet network, and pre-deploy some accounts.
 In the `scripts` directory, you have 4 scripts to initialise the devnet.
 In a second terminal :
 ```
+source ./.env
 npx hardhat run scripts/1.compileCairo.ts
 npx hardhat run scripts/3.deployDeployer.ts
 npx hardhat run scripts/4.deployECU.ts
@@ -56,6 +57,7 @@ All the contracts are already deployed on Alpha Testnet ; their address are in `
 In the `scripts directory`, you have 5 scripts to initialize the testnet.
 In a second terminal :
 ```
+source ./.env
 npx hardhat run scripts/1.compileCairo.ts
 npx hardhat run scripts/2.deployOZwallets.ts
 npx hardhat run scripts/3.deployDeployer.ts

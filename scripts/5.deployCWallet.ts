@@ -1,13 +1,8 @@
 // deploy the Children wallet to the current hardhat starknet network (devnet or alpha).
 // 
-import { Uint256, bnToUint256 } from "starknet/dist/utils/uint256";
-import { toBN, toHex } from "starknet/dist/utils/number";
-import { starknet } from "hardhat";
-import type { StringMap } from "hardhat/types/runtime";
 import hre from "hardhat";
 import LogC from "../src/logColors";
 import { AAccount } from "hardhat";
-import { addrChildrenAlpha2 } from "../src/const";
 import { adaptAddress } from "../src/util";
 import { Account } from "../src/HHstarknetAbstractAccount/accountAA";
 

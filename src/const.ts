@@ -9,6 +9,7 @@ export const addrDeployerAlpha2: string = "0x1b6445ecd4122e45718bf43400f2964c9fc
 export const predeployedDeployerDevnet: string = "0x25fcb74260022bd8ed7e8d542408941826b53345e478b8303d6f31744838a36";
 
 
+
 // Parent Account deployed on Starknet Alpha 1&2 testnet
 export const addrParentAlpha: string = "0xc7c808c324aa67a8c1634ee092c3522039ac8cf109041ffdadf22bfe5c81ba";
 export const addrParentAlpha2: string = "0xb387068b24e723e455b0c00c5c91b4991b2dc9219de0c7474cd14ef1be3264";
@@ -17,13 +18,15 @@ export const addrParentAlpha2: string = "0xb387068b24e723e455b0c00c5c91b4991b2dc
 export const addrGameAlpha: string = "0x5680748004c88480be88565dbb8c17021ac087990dd804a24536c147e858fb1";
 export const addrGameAlpha2: string = "0x5bd66a2f2f321794936e96607522f740ca080df4bcf3d85ca538e1cc66e181c";
 
+
 // Contract class hash of ECU contract :
 export const classHashECU: string = "0x71b11b60733f6a681dd69d6da9d707acc536d47eeab94d29a29d45f400b62d7";
 // Address of ECU in local starknet-devnet :
 export const addrECUdevnet: string = "0x752516de1c266fb6f28f651e8372a9f7c00b10626de572cd32eefd4b8c2bf54";
 // Address of ECU in starknet-alpha 1&2 testnet :
 export const addrECUalpha: string = "0x7a50dbaeabe43b492f4e848970f6f6fcc3d0a23b8119683bc733d04e2918394";
-export const addrECUalpha2: string = "";// waiting a way to feed ETH to Parent Account...😴
+export const addrECUalpha2: string = "0x1c3abfd28665b53e55f4539cdd08df13bf8aab3687bd7b61cc2ffa9ff62f3f9";
+
 
 // Address of Children account in local devnet :
 export const addrChildrenDevnet: string = "0x5d394beb37793857054cb5837613291029b1f423aae91e64833c3d6d4b78c53";
@@ -31,10 +34,14 @@ export const addrChildrenDevnet: string = "0x5d394beb37793857054cb5837613291029b
 export const addrChildrenalpha: string = "0x62be1cdaf0bf1e2693ea336560fe3d75d34d2b0784f038ad64ae4e07cebe52a";
 export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";
 
-// ETH on alpha testnet : 
-export const addrETHtestnet: string = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+
 // ETH on local devnet : 
 export const addrETHdevnet: string = "0x62230ea046a9a5fbc261ac77d03c8d41e5d442db2284587570ab46455fd2488"
+// ETH on alpha testnet : 
+export const addrETHalpha: string = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+// ETH on alpha2 testnet : 
+export const addrETHalpha2: string = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+
 // ArgentX Acc1devnet address : 
 export const addrArgentXWallet: string = "0x045f825D68f5253A546f3E20392cA7159a9B1CABb49EC4285098901a2714d5a4"
 // Braavos account 1 wallet address :

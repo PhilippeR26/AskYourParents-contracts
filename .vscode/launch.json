@@ -58,7 +58,7 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/5.deployCWallet.ts"
+                "${workspaceFolder}/scripts/getETHbalance.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",
