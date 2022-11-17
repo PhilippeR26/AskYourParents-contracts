@@ -9,28 +9,43 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin,
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.uint256 import Uint256
 from starkware.cairo.common.memcpy import memcpy
-from starkware.cairo.common.math import split_felt
+from starkware.cairo.common.math import split_felt, assert_not_zero, assert_not_equal
 from starkware.cairo.common.math_cmp import is_le_felt
 from starkware.cairo.common.bool import TRUE, FALSE
 from starkware.starknet.common.syscalls import (
     call_contract,
     get_caller_address,
     get_contract_address,
-    get_tx_info
+    get_tx_info,
 )
 from starkware.cairo.common.cairo_secp.signature import verify_eth_signature_uint256
-from openzeppelin.utils.constants.library import (
-    IACCOUNT_ID,
-    IERC165_ID,
-    TRANSACTION_VERSION
-)
+from openzeppelin.utils.constants.library import IACCOUNT_ID, IERC165_ID, TRANSACTION_VERSION
+
+//
+// Events
+//
+
+@event
+func AddAdmin(admin_requester: felt, new_requester: felt) {
+}
+@event
+func RemoveAdmin(admin_requester: felt, old_requester: felt) {
+}
 
 //
 // Storage
 //
 
 @storage_var
-func Account_public_key() -> (public_key: felt) {
+func children_account_public_key_storage() -> (public_key: felt) {
+}
+
+@storage_var
+func children_account_admin_list_storage(admin_addr: felt) -> (is_admin: felt) {
+}
+
+@storage_var
+func children_account_addr_whitelist_storage(adr: felt) -> (is_whitelisted: felt) {
 }
 
 //
@@ -53,7 +68,8 @@ struct AccountCallArray {
     data_len: felt,
 }
 
-namespace Account {
+// /////////////////////////////////////////
+namespace ChildrenAccount {
     //
     // Initializer
     //
@@ -61,7 +77,9 @@ namespace Account {
     func initializer{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         _public_key: felt
     ) {
-        Account_public_key.write(_public_key);
+        children_account_public_key_storage.write(_public_key);
+        let (caller_address) = get_caller_address();
+        children_account_admin_list_storage.write(caller_address, TRUE);
         return ();
     }
 
@@ -78,6 +96,16 @@ namespace Account {
         return ();
     }
 
+    // revert if not administrator
+    func assert_only_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+        let (caller) = get_caller_address();
+        let (is_admin) = get_is_admin(caller);
+        with_attr error_message("Account: caller is not administrator") {
+            assert is_admin = TRUE;
+        }
+        return ();
+    }
+
     //
     // Getters
     //
@@ -85,12 +113,12 @@ namespace Account {
     func get_public_key{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
         public_key: felt
     ) {
-        return Account_public_key.read();
+        return children_account_public_key_storage.read();
     }
 
-    func supports_interface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(interface_id: felt) -> (
-        success: felt
-    ) {
+    func supports_interface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        interface_id: felt
+    ) -> (success: felt) {
         if (interface_id == IERC165_ID) {
             return (success=TRUE);
         }
@@ -98,6 +126,13 @@ namespace Account {
             return (success=TRUE);
         }
         return (success=FALSE);
+    }
+
+    // Ask if an address is listed as administrator
+    func get_is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        user_address: felt
+    ) -> (is_admin: felt) {
+        return children_account_admin_list_storage.read(user_address);
     }
 
     //
@@ -108,7 +143,43 @@ namespace Account {
         new_public_key: felt
     ) {
         assert_only_self();
-        Account_public_key.write(new_public_key);
+        children_account_public_key_storage.write(new_public_key);
+        return ();
+    }
+
+    // Add an administror (allowed only by an already recorded admin)
+    func set_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        addr_admin: felt
+    ) {
+        with_attr error_message("set_admin:requester is not administrator.") {
+            assert_only_admin();
+        }
+        with_attr error_message("set_admin: new admin is the zero address.") {
+            assert_not_zero(addr_admin);
+        }
+        children_account_admin_list_storage.write(addr_admin, TRUE);
+        let (caller) = get_caller_address();
+        AddAdmin.emit(caller, addr_admin);
+        return ();
+    }
+    // Remove an administror (allowed only by an already recorded admin)
+    // Self remove not allowed
+    func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        addr_admin: felt
+    ) {
+        with_attr error_message("set_admin:requester is not administrator.") {
+            assert_only_admin();
+        }
+        with_attr error_message("set_admin:addr to remove is not administrator.") {
+            let (is_admin) = get_is_admin(addr_admin);
+            assert is_admin = TRUE;
+        }
+        with_attr error_message("set_admin:requester is self removing its administrator right.") {
+            let (caller) = get_caller_address();
+            assert_not_equal(caller, addr_admin);
+        }
+        children_account_admin_list_storage.write(addr_admin, FALSE);
+        RemoveAdmin.emit(caller, addr_admin);
         return ();
     }
 
@@ -122,7 +193,7 @@ namespace Account {
         ecdsa_ptr: SignatureBuiltin*,
         range_check_ptr,
     }(hash: felt, signature_len: felt, signature: felt*) -> (is_valid: felt) {
-        let (_public_key) = Account_public_key.read();
+        let (_public_key) = children_account_public_key_storage.read();
 
         // This interface expects a signature pointer and length to make
         // no assumption about signature validation schemes.
@@ -251,4 +322,5 @@ namespace Account {
         );
         return ();
     }
+    //
 }
