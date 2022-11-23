@@ -5,4 +5,4 @@
 #curl -X GET http://127.0.0.1:5050/predeployed_accounts -H "Content-Type:application/json"
 
 # provide ETH to a wallet address (here for the devnet ChildrenAccount) :
-curl -X POST http://127.0.0.1:5050/mint -d '{"address":"0x5d394beb37793857054cb5837613291029b1f423aae91e64833c3d6d4b78c53","amount":50000000000000000000,"lite":true}' -H "Content-Type:application/json"
+curl -X POST http://127.0.0.1:5050/mint -d '{"address":"0x24f25365711f5c1f96dd8abaf49188ede25f355cf8e030d0d2913a2ac8b3347","amount":50000000000000000000,"lite":true}' -H "Content-Type:application/json"

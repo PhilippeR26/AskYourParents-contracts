@@ -52,7 +52,7 @@ npx hardhat run scripts/5.deployCWallet.ts
 ```
 
 ### Install in Alpha Goerli testnet
-All the contracts are already deployed on Alpha Testnet ; their address are in `/src.const.ts`.The hereunder instructions are usefull if you have modified the cairo contracts.
+All the contracts are already deployed on Alpha Testnet ; their address are in `/src/const.ts`.The hereunder instructions are usefull if you have modified the cairo contracts.
 
 In the `scripts directory`, you have 5 scripts to initialize the testnet.
 In a second terminal :
@@ -91,6 +91,34 @@ Do not start devnet in a dedicated console.
 - Launch your script in the same console ; for example : `npx hardhat run scripts/5.deployCWallet.ts`. You will see the debug message in this console.
 - When debug is ended, type `npm run stop-devnet`.
 - Remove or comment your debug commands in the cairo files (otherwhise will not work in alpha network).
+
+## 👛 ChildrenWallet is an account abstraction
+Account abstraction meens that a wallet can have deeply customized code. Hardhat isn't currently handling these contracts (only OpenZeppelin and ArgentX wallets) ; the tests in this project are using an extension of Hardhat I built myself (see [here](https://github.com/PhilippeR26/Account-Abstraction-for-Starknet-Hardhat)).
+The functionnalities added to the Children Wallet are :
+### Super administrator :
+The super administrator is defined in the constructor of the Children Wallet: 
+```typescript
+childrenAccount = await AAccount.deployAccountAA("ChildrenAA", { super_admin_address: parentAccountAddress });
+```
+Only one super administrator per Children Account.  
+Here, the Parent Wallet is the super administrator.  
+To get the address of the super administrator :
+```typescript
+const { super_admin_addr: addrBigInt } = await childrenContract.call("get_super_admin");  
+const childrenAccountSuperAdminAddress: string = "0x" + addrBigInt.toString(16);
+```
+
+### Administrators :
+The administrators are nominated by the super administrator:  
+An administrator can resign from his duties.  
+An administrator can be removed by the super administrator.
+### Administrators can freeze the Children Account :
+### Administrators can "rug pull" the content of the Children Account :  
+### Transfert of ETH not allowed :
+### Whitelist of addresses to send ECU Token :
+### administrators can limit the daily use of ECU token :
+### Children can allow a Game account to withdraw a max amount of ECU, for a limited duration :
+
 
 ## 📜 license
 MIT license.

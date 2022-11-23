@@ -59,6 +59,10 @@
     {
         "inputs": [
             {
+                "name": "super_admin_address",
+                "type": "felt"
+            },
+            {
                 "name": "publicKey",
                 "type": "felt"
             }
@@ -97,6 +101,18 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "get_super_admin",
+        "outputs": [
+            {
+                "name": "super_admin_addr",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "name": "user_address",
@@ -121,6 +137,17 @@
             }
         ],
         "name": "setPublicKey",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "add_admin",
         "outputs": [],
         "type": "function"
     },
@@ -216,13 +243,8 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "name": "address",
-                "type": "felt"
-            }
-        ],
-        "name": "add_admin",
+        "inputs": [],
+        "name": "remove_self_admin",
         "outputs": [],
         "type": "function"
     },

@@ -7,8 +7,10 @@ import type { StringMap } from "hardhat/types/runtime";
 import hre from "hardhat";
 import LogC from "../src/logColors";
 import { addrECUdevnet, addrETHalpha, addrETHalpha2, addrETHdevnet, addrGameAlpha2, addrParentAlpha, addrParentAlpha2 } from "../src/const";
+import { getETHinWallet } from "./getBalance";
 import * as dotenv from 'dotenv';
 dotenv.config({ path: "../.env" });
+
 
 
 async function main() {
@@ -19,7 +21,8 @@ async function main() {
     let addrETH: string;
     switch (whichNetwork) {
         case "devnet":
-            addrETH = addrETHdevnet;
+            //addrETH = addrETHdevnet; // with normal devnet (not forked)
+            addrETH = addrETHalpha2; // with Alpha (or alpha2) forked into devnet
             break;
         case "alpha":
             addrETH = addrETHalpha;
@@ -30,21 +33,15 @@ async function main() {
         default:
             throw new Error("IntegratedDevnet and mainnet not authorized for this script!");
     }
-    const ListOfWalletDevnet = await starknet.devnet.getPredeployedAccounts();
 
     // *********************************************************************************
     // Define 👇 the adress of the wallet to analyse
     //const addrWallet = ListOfWalletDevnet[0].address; // for predeployed wallets in devnet
-    const addrWallet = addrParentAlpha; // for alpha or alpha2
+    const addrWallet = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";
     // *********************************************************************************
 
-    const ERC20source = await starknet.getContractFactory("starknet-artifacts/contracts/openzeppelin/token/erc20/presets/ERC20.cairo");
-    const ERC20contract = ERC20source.getContractAt(addrETH);
-    const payloadCall: StringMap = { account: BigInt(addrWallet) };
-    const { balance: balanceETH } = await ERC20contract.call("balanceOf", payloadCall);
-    const result = hexToDecimalString(toHex(uint256ToBN(balanceETH)));
-    const result2 = BigInt(result);
-    console.log("Amount of ETH in wallet address ", addrWallet, " =", LogC.fg.green, Number(result2) / 1E18, "ETH", LogC.reset, "\nUint256=", balanceETH, "| dec =", result);
+    const result2 = await getETHinWallet(addrWallet, addrETH);
+    console.log("Amount of ETH in wallet address ", addrWallet, " =", LogC.fg.green, Number(result2) / 1E18, "ETH", LogC.reset, "\n dec =", result2);
 
 
 }

@@ -6,15 +6,21 @@
 from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin, BitwiseBuiltin
 from starkware.starknet.common.syscalls import get_tx_info
 
-from accountAA_contracts.ChildrenAA.v1_0_0.library import ChildrenAccount, AccountCallArray
+from accountAA_contracts.ChildrenAA.v1_0_0.library import Account, AccountCallArray
+from accountAA_contracts.ChildrenAA.v1_0_0.WalletAdministration import (
+    CAadmin,
+    children_account_super_admin_storage,
+)
 
 //
 // Constructor
 //
 
 @constructor
-func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(publicKey: felt) {
-    ChildrenAccount.initializer(publicKey);
+func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    super_admin_address: felt, publicKey: felt
+) {
+    Account.initializer(super_admin_address, publicKey);
     return ();
 }
 
@@ -26,7 +32,7 @@ func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr
 func getPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
     publicKey: felt
 ) {
-    let (publicKey: felt) = ChildrenAccount.get_public_key();
+    let (publicKey: felt) = Account.get_public_key();
     return (publicKey=publicKey);
 }
 
@@ -34,7 +40,16 @@ func getPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_pt
 func supportsInterface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     interfaceId: felt
 ) -> (success: felt) {
-    return ChildrenAccount.supports_interface(interfaceId);
+    return Account.supports_interface(interfaceId);
+}
+
+// get super-administrator address
+@view
+func get_super_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+    super_admin_addr: felt
+) {
+    let sa_address: felt = CAadmin.get_super_admin();
+    return (super_admin_addr=sa_address);
 }
 
 // is an administrator address ?
@@ -42,7 +57,8 @@ func supportsInterface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_che
 func is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     user_address: felt
 ) -> (is_admin: felt) {
-    return ChildrenAccount.get_is_admin(user_address);
+    let (isadmin) = CAadmin.get_is_admin(user_address);
+    return (is_admin=isadmin);
 }
 
 //
@@ -53,7 +69,13 @@ func is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
 func setPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     newPublicKey: felt
 ) {
-    ChildrenAccount.set_public_key(newPublicKey);
+    Account.set_public_key(newPublicKey);
+    return ();
+}
+
+@external
+func add_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
+    CAadmin.set_admin(address);
     return ();
 }
 
@@ -65,7 +87,7 @@ func setPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_pt
 func isValidSignature{
     syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, ecdsa_ptr: SignatureBuiltin*, range_check_ptr
 }(hash: felt, signature_len: felt, signature: felt*) -> (isValid: felt) {
-    let (isValid: felt) = ChildrenAccount.is_valid_signature(hash, signature_len, signature);
+    let (isValid: felt) = Account.is_valid_signature(hash, signature_len, signature);
     return (isValid=isValid);
 }
 
@@ -74,9 +96,7 @@ func __validate__{
     syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, ecdsa_ptr: SignatureBuiltin*, range_check_ptr
 }(call_array_len: felt, call_array: AccountCallArray*, calldata_len: felt, calldata: felt*) {
     let (tx_info) = get_tx_info();
-    ChildrenAccount.is_valid_signature(
-        tx_info.transaction_hash, tx_info.signature_len, tx_info.signature
-    );
+    Account.is_valid_signature(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature);
     return ();
 }
 
@@ -85,9 +105,7 @@ func __validate_declare__{
     syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, ecdsa_ptr: SignatureBuiltin*, range_check_ptr
 }(class_hash: felt) {
     let (tx_info) = get_tx_info();
-    ChildrenAccount.is_valid_signature(
-        tx_info.transaction_hash, tx_info.signature_len, tx_info.signature
-    );
+    Account.is_valid_signature(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature);
     return ();
 }
 
@@ -101,7 +119,7 @@ func __execute__{
 }(call_array_len: felt, call_array: AccountCallArray*, calldata_len: felt, calldata: felt*) -> (
     response_len: felt, response: felt*
 ) {
-    let (response_len, response) = ChildrenAccount.execute(
+    let (response_len, response) = Account.execute(
         call_array_len, call_array, calldata_len, calldata
     );
     return (response_len, response);
@@ -109,13 +127,14 @@ func __execute__{
 
 // add administrator
 @external
-func add_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
-    ChildrenAccount.set_admin(address);
+func remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+    CAadmin._remove_self_admin();
     return ();
 }
+
 // remove administrator
 @external
 func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
-    ChildrenAccount.remove_admin(address);
+    CAadmin.remove_admin(address);
     return ();
 }

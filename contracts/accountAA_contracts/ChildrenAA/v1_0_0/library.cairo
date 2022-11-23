@@ -20,17 +20,13 @@ from starkware.starknet.common.syscalls import (
 )
 from starkware.cairo.common.cairo_secp.signature import verify_eth_signature_uint256
 from openzeppelin.utils.constants.library import IACCOUNT_ID, IERC165_ID, TRANSACTION_VERSION
+from accountAA_contracts.ChildrenAA.v1_0_0.WalletAdministration import (
+    children_account_super_admin_storage,
+)
 
 //
 // Events
 //
-
-@event
-func AddAdmin(admin_requester: felt, new_requester: felt) {
-}
-@event
-func RemoveAdmin(admin_requester: felt, old_requester: felt) {
-}
 
 //
 // Storage
@@ -38,14 +34,6 @@ func RemoveAdmin(admin_requester: felt, old_requester: felt) {
 
 @storage_var
 func children_account_public_key_storage() -> (public_key: felt) {
-}
-
-@storage_var
-func children_account_admin_list_storage(admin_addr: felt) -> (is_admin: felt) {
-}
-
-@storage_var
-func children_account_addr_whitelist_storage(adr: felt) -> (is_whitelisted: felt) {
 }
 
 //
@@ -69,17 +57,19 @@ struct AccountCallArray {
 }
 
 // /////////////////////////////////////////
-namespace ChildrenAccount {
+namespace Account {
     //
     // Initializer
     //
 
     func initializer{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        _public_key: felt
+        super_admin_address: felt, _public_key: felt
     ) {
         children_account_public_key_storage.write(_public_key);
-        let (caller_address) = get_caller_address();
-        children_account_admin_list_storage.write(caller_address, TRUE);
+        with_attr error_message("constructor : super_admin must not have 0x00 address.") {
+            assert_not_zero(super_admin_address);
+        }
+        children_account_super_admin_storage.write(super_admin_address);
         return ();
     }
 
@@ -90,18 +80,8 @@ namespace ChildrenAccount {
     func assert_only_self{syscall_ptr: felt*}() {
         let (self) = get_contract_address();
         let (caller) = get_caller_address();
-        with_attr error_message("Account: caller is not this account") {
+        with_attr error_message("error Account: caller is not this account") {
             assert self = caller;
-        }
-        return ();
-    }
-
-    // revert if not administrator
-    func assert_only_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
-        let (caller) = get_caller_address();
-        let (is_admin) = get_is_admin(caller);
-        with_attr error_message("Account: caller is not administrator") {
-            assert is_admin = TRUE;
         }
         return ();
     }
@@ -128,13 +108,6 @@ namespace ChildrenAccount {
         return (success=FALSE);
     }
 
-    // Ask if an address is listed as administrator
-    func get_is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        user_address: felt
-    ) -> (is_admin: felt) {
-        return children_account_admin_list_storage.read(user_address);
-    }
-
     //
     // Setters
     //
@@ -144,42 +117,6 @@ namespace ChildrenAccount {
     ) {
         assert_only_self();
         children_account_public_key_storage.write(new_public_key);
-        return ();
-    }
-
-    // Add an administror (allowed only by an already recorded admin)
-    func set_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        addr_admin: felt
-    ) {
-        with_attr error_message("set_admin:requester is not administrator.") {
-            assert_only_admin();
-        }
-        with_attr error_message("set_admin: new admin is the zero address.") {
-            assert_not_zero(addr_admin);
-        }
-        children_account_admin_list_storage.write(addr_admin, TRUE);
-        let (caller) = get_caller_address();
-        AddAdmin.emit(caller, addr_admin);
-        return ();
-    }
-    // Remove an administror (allowed only by an already recorded admin)
-    // Self remove not allowed
-    func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        addr_admin: felt
-    ) {
-        with_attr error_message("set_admin:requester is not administrator.") {
-            assert_only_admin();
-        }
-        with_attr error_message("set_admin:addr to remove is not administrator.") {
-            let (is_admin) = get_is_admin(addr_admin);
-            assert is_admin = TRUE;
-        }
-        with_attr error_message("set_admin:requester is self removing its administrator right.") {
-            let (caller) = get_caller_address();
-            assert_not_equal(caller, addr_admin);
-        }
-        children_account_admin_list_storage.write(addr_admin, FALSE);
-        RemoveAdmin.emit(caller, addr_admin);
         return ();
     }
 
@@ -252,13 +189,13 @@ namespace ChildrenAccount {
 
         let (tx_info) = get_tx_info();
         // Disallow deprecated tx versions
-        with_attr error_message("Account: deprecated tx version") {
+        with_attr error_message("error Account: deprecated tx version") {
             assert is_le_felt(TRANSACTION_VERSION, tx_info.version) = TRUE;
         }
 
         // Assert not a reentrant call
         let (caller) = get_caller_address();
-        with_attr error_message("Account: reentrant call") {
+        with_attr error_message("error Account: reentrant call") {
             assert caller = 0;
         }
 

@@ -25,7 +25,7 @@
             "args": [
                 "test",
                 "--verbose",
-                "${workspaceFolder}/scripts/deployECU.ts"
+                "${workspaceFolder}/test/testAdmin.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",
@@ -58,7 +58,7 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/getETHbalance.ts"
+                "${workspaceFolder}/scripts/5.deployCWallet.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",

@@ -2,7 +2,7 @@
 import { OpenZeppelinAccount } from "@shardlabs/starknet-hardhat-plugin/dist/src/account";
 import { StarknetPluginError } from "@shardlabs/starknet-hardhat-plugin/dist/src/starknet-plugin-error";
 import { AccountImplementationType, DeployAccountOptions } from "@shardlabs/starknet-hardhat-plugin/dist/src/types";
-import { Block, HardhatRuntimeEnvironment } from "hardhat/types";
+import { Block, HardhatRuntimeEnvironment, StringMap } from "hardhat/types";
 import { Account, OZaccountAA } from "./accountAA";
 
 
@@ -20,11 +20,12 @@ export function getWalletAAUtil(name: string, hre: HardhatRuntimeEnvironment) {
 
 export async function deployAccountAAUtil(
     accountType: string,
+    constructorAA: StringMap,
     hre: HardhatRuntimeEnvironment,
     options?: DeployAccountOptions
 ): Promise<Account> {
     //let account: Account;
-    const account = await OZaccountAA.deployAAfromABI(hre, accountType, options);
+    const account = await OZaccountAA.deployAAfromABI(hre, accountType, constructorAA, options);
     //           throw new StarknetPluginError("Invalid account type requested.");
 
     return account;
@@ -37,16 +38,7 @@ export async function getAccountAAFromAddressUtil(
     hre: HardhatRuntimeEnvironment
 ): Promise<Account> {
     let account: Account;
-    // switch (accountType) {
-    //     case "OpenZeppelin":
     account = await OZaccountAA.getAccountAAfromAddress(address, privateKey, accountType, hre);
-    //         break;
-    //     case "Argent":
-    //         account = await ArgentAccount.getAccountFromAddress(address, privateKey, hre);
-    //         break;
-    //     default:
-    //         throw new StarknetPluginError("Invalid account type requested.");
-    // }
 
     return account;
 }

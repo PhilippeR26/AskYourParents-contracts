@@ -38,11 +38,12 @@ declare module "hardhat/types/runtime" {
 
             /**
              * Deploys an Account Abstraction contract based on the ABI and the type of Account selected
-             * @param accountType the enumerator value of the type of Account to use
+             * @param accountType the string name of Account type to use
+             * @param constructorAA constructor parameters <StringMap>, without PublicKey parameter
              * @param options optional deployment options
              * @returns an Account object
              */
-            deployAccountAA: (accountType: string, options?: DeployAccountOptions) => Promise<Account>;
+            deployAccountAA: (accountType: string, constructorAA: StringMap, options?: DeployAccountOptions) => Promise<Account>;
 
             /**
              * Returns an Abstract Account already deployed based on the address and validated by the private key
