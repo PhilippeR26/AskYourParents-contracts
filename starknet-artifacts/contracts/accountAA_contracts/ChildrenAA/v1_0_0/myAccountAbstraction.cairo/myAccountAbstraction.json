@@ -338,7 +338,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 354,
-                "value": "***error assert_only_super_admin: caller is not super administrator."
+                "value": "***error_assert_only_super_admin:caller_is_not_super_administrator."
             },
             {
                 "accessible_scopes": [
@@ -356,7 +356,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 372,
-                "value": "***error set_admin: Only for super administrator"
+                "value": "***error_set_admin:_Only_for_super_administrator"
             },
             {
                 "accessible_scopes": [
@@ -374,7 +374,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 377,
-                "value": "***error set_admin: new admin is the zero address."
+                "value": "***error_set_admin:_new_admin_is_the_zero_address."
             },
             {
                 "accessible_scopes": [
@@ -392,7 +392,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 401,
-                "value": "***error set_admin:requester is not super-administrator."
+                "value": "***error_set_admin:requester_is_not_super-administrator."
             },
             {
                 "accessible_scopes": [
@@ -410,7 +410,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 406,
-                "value": "***error set_admin:addr to remove is not administrator."
+                "value": "***error_set_admin:addr_to_remove_is_not administrator."
             },
             {
                 "accessible_scopes": [
@@ -428,7 +428,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 435,
-                "value": "***error remove_self_admin: can't remove admin with the zero address."
+                "value": "***error_remove_self_admin:_can't_remove_admin_with_the_zero_address."
             },
             {
                 "accessible_scopes": [
@@ -446,7 +446,7 @@
                 },
                 "name": "error_message",
                 "start_pc": 443,
-                "value": "***error remove_self_admin: caller is not admin."
+                "value": "***error_remove_self_admin:_caller_is_not_admin."
             },
             {
                 "accessible_scopes": [

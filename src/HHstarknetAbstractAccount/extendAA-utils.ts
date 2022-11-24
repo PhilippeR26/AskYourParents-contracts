@@ -23,7 +23,7 @@ export async function deployAccountAAUtil(
     constructorAA: StringMap,
     hre: HardhatRuntimeEnvironment,
     options?: DeployAccountOptions
-): Promise<Account> {
+): Promise<OZaccountAA> {
     //let account: Account;
     const account = await OZaccountAA.deployAAfromABI(hre, accountType, constructorAA, options);
     //           throw new StarknetPluginError("Invalid account type requested.");
@@ -36,8 +36,8 @@ export async function getAccountAAFromAddressUtil(
     privateKey: string,
     accountType: string,
     hre: HardhatRuntimeEnvironment
-): Promise<Account> {
-    let account: Account;
+): Promise<OZaccountAA> {
+    let account: OZaccountAA;
     account = await OZaccountAA.getAccountAAfromAddress(address, privateKey, accountType, hre);
 
     return account;

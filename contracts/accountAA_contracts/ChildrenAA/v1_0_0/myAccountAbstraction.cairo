@@ -125,14 +125,14 @@ func __execute__{
     return (response_len, response);
 }
 
-// add administrator
+// remove self as administrator
 @external
 func remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
     CAadmin._remove_self_admin();
     return ();
 }
 
-// remove administrator
+// remove administrator (only for admin)
 @external
 func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
     CAadmin.remove_admin(address);

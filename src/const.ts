@@ -18,6 +18,10 @@ export const addrParentAlpha2: string = "0xb387068b24e723e455b0c00c5c91b4991b2dc
 export const addrGameAlpha: string = "0x5680748004c88480be88565dbb8c17021ac087990dd804a24536c147e858fb1";
 export const addrGameAlpha2: string = "0x5bd66a2f2f321794936e96607522f740ca080df4bcf3d85ca538e1cc66e181c";
 
+// Admin Account deployed on Starknet Alpha 1&2 testnet
+export const addrAdminAlpha: string = "0x1964e62d5e2475823f1448f37c1ee21427861ec44a3216f6544fe8ccab26c59";
+export const addrAdminAlpha2: string = "0x230276d1d2ff1c6d6e038da30940ceb5da6a0c56d1795ac0911b78b3e202e3b";
+
 
 // Contract class hash of ECU contract :
 export const classHashECU: string = "0x25143c35e179a296eb1585d7961ef207d4d62379de029967663dc530736635d";
@@ -29,7 +33,7 @@ export const addrECUalpha2: string = "0x1c3abfd28665b53e55f4539cdd08df13bf8aab36
 
 
 // Address of Children account in local devnet :
-export const addrChildrenDevnet: string = "0x24f25365711f5c1f96dd8abaf49188ede25f355cf8e030d0d2913a2ac8b3347";
+export const addrChildrenDevnet: string = "0x96784549d525d330f873e186df1713b7559c2dbc56f05bb24ddd3587f54056";
 // Address of Children account in Starknet Alpha 1&2 testnet :
 export const addrChildrenAlpha: string = "0x62be1cdaf0bf1e2693ea336560fe3d75d34d2b0784f038ad64ae4e07cebe52a";
 export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";

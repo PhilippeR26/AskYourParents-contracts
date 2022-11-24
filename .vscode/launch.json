@@ -17,6 +17,22 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "npx hardhat ETH localnet",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
+            "args": [
+                "node",
+                "--verbose"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/src",
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "npx hardhat TEST starknet",
             "skipFiles": [
                 "<node_internals>/**"
@@ -34,31 +50,15 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "npx hardhat ETH localnet",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
-            "args": [
-                "node",
-                "--verbose"
-            ],
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/src",
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "npx hardhat RUN starknet",
             "skipFiles": [
-                "<node_internals>/**"
+                "node_internals/**"
             ],
             "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/5.deployCWallet.ts"
+                "${workspaceFolder}/scripts/testCwallet.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",

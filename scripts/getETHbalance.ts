@@ -37,7 +37,7 @@ async function main() {
     // *********************************************************************************
     // Define 👇 the adress of the wallet to analyse
     //const addrWallet = ListOfWalletDevnet[0].address; // for predeployed wallets in devnet
-    const addrWallet = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";
+    const addrWallet = "0x6de80124118de86b8315a1d331c6c2b82586c3ee1044263cdefd3adec3a41b1";
     // *********************************************************************************
 
     const result2 = await getETHinWallet(addrWallet, addrETH);

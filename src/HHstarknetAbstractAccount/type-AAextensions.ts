@@ -43,7 +43,7 @@ declare module "hardhat/types/runtime" {
              * @param options optional deployment options
              * @returns an Account object
              */
-            deployAccountAA: (accountType: string, constructorAA: StringMap, options?: DeployAccountOptions) => Promise<Account>;
+            deployAccountAA: (accountType: string, constructorAA: StringMap, options?: DeployAccountOptions) => Promise<OZaccountAA>;
 
             /**
              * Returns an Abstract Account already deployed based on the address and validated by the private key
@@ -52,7 +52,7 @@ declare module "hardhat/types/runtime" {
              * @param accountType the enumerator value of the type of Account to use
              * @returns an Account object
              */
-            getAccountAAfromAddress: (address: string, privateKey: string, accountType: string) => Promise<Account>;
+            getAccountAAfromAddress: (address: string, privateKey: string, accountType: string) => Promise<OZaccountAA>;
         }
 
     }

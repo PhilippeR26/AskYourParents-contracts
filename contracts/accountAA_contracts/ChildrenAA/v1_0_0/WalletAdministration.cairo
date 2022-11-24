@@ -66,14 +66,14 @@ namespace CAadmin {
     func assert_only_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
         alloc_locals;
         let (caller_address) = get_caller_address();
-        %{ print(f"***** assert_only_admin:caller_address =  {ids.caller_address}") %}
+        // %{ print(f"***** assert_only_admin:caller_address =  {ids.caller_address}") %}
         // super admin is also adminstrator
         let (addr_super_admin) = get_super_admin();
         if (caller_address == addr_super_admin) {
             return ();
         }
         let (is_admin) = get_is_admin(caller_address);
-        with_attr error_message("***error assert_only_admin: caller is not administrator") {
+        with_attr error_message("***error_assert_only_admin:_caller_is_not_administrator") {
             assert is_admin = TRUE;
         }
         return ();
@@ -84,10 +84,10 @@ namespace CAadmin {
         ) {
         alloc_locals;
         let (caller_address) = get_caller_address();
-        %{ print(f"***** assert_only_super_admin:caller_address =  {ids.caller_address}") %}
+        // %{ print(f"***** assert_only_super_admin:caller_address =  {ids.caller_address}") %}
         let (addr_super_admin) = get_super_admin();
         with_attr error_message(
-                "***error assert_only_super_admin: caller is not super administrator.") {
+                "***error_assert_only_super_admin:caller_is_not_super_administrator.") {
             assert caller_address = addr_super_admin;
         }
         return ();
@@ -120,13 +120,13 @@ namespace CAadmin {
     func set_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         addr_admin: felt
     ) {
-        with_attr error_message("***error set_admin: Only for super administrator") {
+        with_attr error_message("***error_set_admin:_Only_for_super_administrator") {
             assert_only_super_admin();
         }
         // with_attr error_message("***error set_admin:requester is not administrator.") {
         //     assert_only_admin();
         // }
-        with_attr error_message("***error set_admin: new admin is the zero address.") {
+        with_attr error_message("***error_set_admin:_new_admin_is_the_zero_address.") {
             assert_not_zero(addr_admin);
         }
         children_account_admin_list_storage.write(addr_admin, TRUE);
@@ -142,10 +142,10 @@ namespace CAadmin {
     func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         addr_admin: felt
     ) {
-        with_attr error_message("***error set_admin:requester is not super-administrator.") {
+        with_attr error_message("***error_set_admin:requester_is_not_super-administrator.") {
             assert_only_super_admin();
         }
-        with_attr error_message("***error set_admin:addr to remove is not administrator.") {
+        with_attr error_message("***error_set_admin:addr_to_remove_is_not administrator.") {
             let (is_admin) = get_is_admin(addr_admin);
             assert is_admin = TRUE;
         }
@@ -163,11 +163,11 @@ namespace CAadmin {
     func _remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
         let (caller_address) = get_caller_address();
         with_attr error_message(
-                "***error remove_self_admin: can't remove admin with the zero address.") {
+                "***error_remove_self_admin:_can't_remove_admin_with_the_zero_address.") {
             assert_not_zero(caller_address);
         }
         let (is_admin) = get_is_admin(caller_address);
-        with_attr error_message("***error remove_self_admin: caller is not admin.") {
+        with_attr error_message("***error_remove_self_admin:_caller_is_not_admin.") {
             assert is_admin = TRUE;
         }
         children_account_admin_list_storage.write(caller_address, FALSE);

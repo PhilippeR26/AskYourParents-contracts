@@ -98,7 +98,7 @@ The functionnalities added to the Children Wallet are :
 ### Super administrator :
 The super administrator is defined in the constructor of the Children Wallet: 
 ```typescript
-childrenAccount = await AAccount.deployAccountAA("ChildrenAA", { super_admin_address: parentAccountAddress });
+childrenAccount = await AAccount.deployAccountAA("ChildrenAA", { super_admin_address: accountParentAddress });
 ```
 Only one super administrator per Children Account.  
 Here, the Parent Wallet is the super administrator.  
@@ -110,8 +110,23 @@ const childrenAccountSuperAdminAddress: string = "0x" + addrBigInt.toString(16);
 
 ### Administrators :
 The administrators are nominated by the super administrator:  
-An administrator can resign from his duties.  
-An administrator can be removed by the super administrator.
+```typescript
+await accountParent.invoke(childrenContract, "add_admin", { address: accountAdmin.address }, { maxFee: 900_000_000_000_000 });
+```
+The super administrator is also an administrator.
+An administrator can resign from his duties :
+```typescript
+await accountAdmin.invoke(childrenContract, "remove_self_admin", {}, { maxFee: 900_000_000_000_000 });
+``` 
+An administrator can be removed by the super administrator:
+```typescript
+await accountParent.invoke(childrenContract, "remove_admin", { address: accountAdmin.address }, { maxFee: 900_000_000_000_000 });
+``` 
+To know if an address is administrator :
+```typescript
+const { is_admin: result } = await childrenContract.call("is_admin", { user_address: accountAdmin.address });
+// result = string ("0"/"1")
+```
 ### Administrators can freeze the Children Account :
 ### Administrators can "rug pull" the content of the Children Account :  
 ### Transfert of ETH not allowed :

@@ -22,6 +22,12 @@ async function main() {
             const gameAccountPrivateKey = gameAccount.privateKey;
             console.log("✅ Game wallet address=", gameAccountAddress, "\nCopy/Paste this address in src/const.ts, in varName", whichNetwork === "alpha-goerli-2" ? "addrGameAlpha2" : "addrGameAlpha", "\n  wallet private key=", gameAccountPrivateKey, "\nCopy/Paste this key in .env file, in varName", whichNetwork === "alpha-goerli-2" ? "OZ_GAME_ACCOUNT2_PRIVATE_KEY" : "OZ_GAME_ACCOUNT_PRIVATE_KEY");
             console.log("⚠️", LogC.fg.green, "Send some Goerli ETH (0.01 ETH each is enough to start) to these 2 wallets, prior to proceed to next items", LogC.reset);
+            // admin wallet
+            const adminAccount = await starknet.deployAccount("OpenZeppelin");
+            const adminAccountAddress = adaptAddress(adminAccount.address);
+            const adminAccountPrivateKey = adminAccount.privateKey;
+            console.log("✅ Admin wallet address=", adminAccountAddress, "\nCopy/Paste this address in src/const.ts, in varName", whichNetwork === "alpha-goerli-2" ? "addrAdminAlpha2" : "addrAdminAlpha", "\n  wallet private key=", adminAccountPrivateKey, "\nCopy/Paste this key in .env file, in varName", whichNetwork === "alpha-goerli-2" ? "OZ_ADMIN_ACCOUNT2_PRIVATE_KEY" : "OZ_ADMIN_ACCOUNT_PRIVATE_KEY");
+            console.log("⚠️", LogC.fg.green, "Send some Goerli ETH (0.01 ETH each is enough to start) to these 3 wallets, prior to proceed to next items", LogC.reset);
             break;
         default:
             throw new Error("IntegratedDevnet, devnet and mainnet not authorized for this script!");

@@ -4,7 +4,6 @@ coverage
 coverage.json
 typechain
 typechain-types
-README.md.backup
 
 #Hardhat files
 cache
@@ -14,3 +13,4 @@ artifacts
 #ts
 out
 
+README.md.backup

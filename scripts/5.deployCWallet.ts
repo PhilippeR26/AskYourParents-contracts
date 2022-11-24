@@ -5,7 +5,7 @@ import LogC from "../src/logColors";
 import { starknet } from "hardhat";
 import { AAccount } from "hardhat";
 import { adaptAddress } from "../src/util";
-import { Account } from "../src/HHstarknetAbstractAccount/accountAA";
+import { Account, OZaccountAA } from "../src/HHstarknetAbstractAccount/accountAA";
 import * as dotenv from 'dotenv';
 import { addrParentAlpha, addrParentAlpha2 } from "../src/const";
 import axios from "axios";
@@ -18,7 +18,7 @@ async function main() {
     console.log("\nworking in network :", LogC.fg.yellow, whichNetwork, LogC.reset);
     // deploy Children Account
     let parentAccountAddress: string;
-    let childrenAccount: Account;
+    let childrenAccount: OZaccountAA;
     switch (whichNetwork) {
         case "devnet":
             const ListOfWallet = await starknet.devnet.getPredeployedAccounts();
