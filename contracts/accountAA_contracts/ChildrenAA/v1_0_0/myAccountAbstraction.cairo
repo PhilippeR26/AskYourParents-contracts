@@ -7,14 +7,20 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin,
 from starkware.starknet.common.syscalls import get_tx_info
 
 from accountAA_contracts.ChildrenAA.v1_0_0.library import Account, AccountCallArray
+from accountAA_contracts.ChildrenAA.v1_0_0.WalletAdministration import (
+    CAadmin,
+    children_account_super_admin_storage,
+)
 
 //
 // Constructor
 //
 
 @constructor
-func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(publicKey: felt) {
-    Account.initializer(publicKey);
+func constructor{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    super_admin_address: felt, publicKey: felt
+) {
+    Account.initializer(super_admin_address, publicKey);
     return ();
 }
 
@@ -37,6 +43,24 @@ func supportsInterface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_che
     return Account.supports_interface(interfaceId);
 }
 
+// get super-administrator address
+@view
+func get_super_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+    super_admin_addr: felt
+) {
+    let sa_address: felt = CAadmin.get_super_admin();
+    return (super_admin_addr=sa_address);
+}
+
+// is an administrator address ?
+@view
+func is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+    user_address: felt
+) -> (is_admin: felt) {
+    let (isadmin) = CAadmin.get_is_admin(user_address);
+    return (is_admin=isadmin);
+}
+
 //
 // Setters
 //
@@ -46,6 +70,12 @@ func setPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_pt
     newPublicKey: felt
 ) {
     Account.set_public_key(newPublicKey);
+    return ();
+}
+
+@external
+func add_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
+    CAadmin.set_admin(address);
     return ();
 }
 
@@ -93,4 +123,18 @@ func __execute__{
         call_array_len, call_array, calldata_len, calldata
     );
     return (response_len, response);
+}
+
+// remove self as administrator
+@external
+func remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+    CAadmin._remove_self_admin();
+    return ();
+}
+
+// remove administrator (only for admin)
+@external
+func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
+    CAadmin.remove_admin(address);
+    return ();
 }

@@ -27,7 +27,41 @@
         "type": "struct"
     },
     {
+        "data": [
+            {
+                "name": "admin_requester",
+                "type": "felt"
+            },
+            {
+                "name": "new_requester",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "AddAdmin",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "admin_requester",
+                "type": "felt"
+            },
+            {
+                "name": "old_requester",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RemoveAdmin",
+        "type": "event"
+    },
+    {
         "inputs": [
+            {
+                "name": "super_admin_address",
+                "type": "felt"
+            },
             {
                 "name": "publicKey",
                 "type": "felt"
@@ -67,6 +101,35 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "get_super_admin",
+        "outputs": [
+            {
+                "name": "super_admin_addr",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user_address",
+                "type": "felt"
+            }
+        ],
+        "name": "is_admin",
+        "outputs": [
+            {
+                "name": "is_admin",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "name": "newPublicKey",
@@ -74,6 +137,17 @@
             }
         ],
         "name": "setPublicKey",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "add_admin",
         "outputs": [],
         "type": "function"
     },
@@ -166,6 +240,23 @@
                 "type": "felt*"
             }
         ],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "remove_self_admin",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "remove_admin",
+        "outputs": [],
         "type": "function"
     }
 ]

@@ -17,23 +17,6 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "npx hardhat TEST starknet",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
-            "args": [
-                "test",
-                "--verbose",
-                "${workspaceFolder}/scripts/deployECU.ts"
-            ],
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/test",
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "npx hardhat ETH localnet",
             "skipFiles": [
                 "<node_internals>/**"
@@ -50,15 +33,32 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "npx hardhat RUN starknet",
+            "name": "npx hardhat TEST starknet",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
             "args": [
+                "test",
+                "--verbose",
+                "${workspaceFolder}/test/testAdmin.ts"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/test",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "npx hardhat RUN starknet",
+            "skipFiles": [
+                "node_internals/**"
+            ],
+            "runtimeExecutable": "${workspaceFolder}/node_modules/hardhat/internal/cli/cli.js",
+            "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/getETHbalance.ts"
+                "${workspaceFolder}/scripts/testCwallet.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",

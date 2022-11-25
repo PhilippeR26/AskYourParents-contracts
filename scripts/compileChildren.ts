@@ -11,7 +11,6 @@ import hardhat from "hardhat";
 // accountContract : if contract is an account contract
 
 async function main() {
-    await hardhat.run("starknet-compile", { paths: ["contracts/deployer/myUniversalDeployer.cairo", "contracts/openzeppelin/token/erc20/presets/ERC20Mintable.cairo"], disableHintValidation: true });
     await hardhat.run("starknet-compile", { paths: ["contracts/accountAA_contracts/ChildrenAA/v1_0_0/myAccountAbstraction.cairo"], disableHintValidation: true, accountContract: true });
 }
 main()

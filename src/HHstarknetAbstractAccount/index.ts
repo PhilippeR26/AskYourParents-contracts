@@ -32,8 +32,8 @@ extendEnvironment((hre) => {
         //     return wallet;
         // },
 
-        deployAccountAA: async (accountType, options) => {
-            const account = await deployAccountAAUtil(accountType, hre, options);
+        deployAccountAA: async (accountType, constructorAA, options) => {
+            const account = await deployAccountAAUtil(accountType, constructorAA, hre, options);
             return account;
         },
 
