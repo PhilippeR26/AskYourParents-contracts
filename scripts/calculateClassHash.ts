@@ -1,4 +1,6 @@
 // Calculate the class hash of a compiled contract.
+// Launch with : npx hardhat run scripts/calculateClassHash.ts
+
 import hardhat, { starknet } from "hardhat";
 import type { Account } from "hardhat/types/runtime";
 import hre from "hardhat";
@@ -13,7 +15,6 @@ dotenv.config({ path: "../.env" });
 // 🚨🚨🚨 launch 'starknet-devnet --seed 0' before using this script.
 //        👆👆👆
 // In hardhat.config.ts file, configure starknet.network to 'devnet'.
-// launch this script with 'npx hardhat run scripts/calculateClassHash.ts'.
 
 async function main() {
     // Recover the starknet:network name defined in the hardhat.config.ts file
@@ -37,12 +38,16 @@ async function main() {
     }
 
     // 🚨🚨🚨 Put here the name of the contract code source : 👇👇👇
-    const sourceContract = "contracts/openzeppelin/account/presets/Account.cairo";
+    const sourceContract = "contracts/accountAA_contracts/ChildrenAA/v1_0_0/myAccountAbstraction.cairo";
+
     await hardhat.run("starknet-compile", { paths: [sourceContract], disableHintValidation: true, accountContract: true });
+    //await hardhat.run("starknet-compile", { paths: [sourceContract], disableHintValidation: true });
+
     const contractFactory = await starknet.getContractFactory(sourceContract);
 
     const classHash = await accountParent.declare(contractFactory, { maxFee: 5_000_000_000_000_000 });// as Fee of Declare function can't be estimated in Hardhat, let's jump in with a rough and over-evaluated value....
 
+    console.log("Contract declared on Devnet.");
     console.log("✅ Contract class hash :", LogC.fg.green + classHash, LogC.reset);
 }
 

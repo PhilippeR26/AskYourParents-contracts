@@ -1,5 +1,6 @@
 // compileCairo.ts
 // compile cairo contracts from a typescript script.
+// launch with : npx hardhat run scripts/1.compileCairo.ts
 
 import hardhat from "hardhat";
 

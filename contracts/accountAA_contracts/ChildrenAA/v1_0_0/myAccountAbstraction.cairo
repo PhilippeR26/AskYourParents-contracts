@@ -110,6 +110,14 @@ func __validate_declare__{
 }
 
 @external
+func __validate_deploy__{
+    syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, ecdsa_ptr: SignatureBuiltin*, range_check_ptr
+}(class_hash: felt, contract_address_salt: felt, super_admin_address: felt, publicKey: felt) {
+    let (tx_info) = get_tx_info();
+    Account.is_valid_signature(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature);
+    return ();
+}
+@external
 func __execute__{
     syscall_ptr: felt*,
     pedersen_ptr: HashBuiltin*,

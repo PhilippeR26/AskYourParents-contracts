@@ -1,4 +1,5 @@
 node_modules
+package-lock.json
 .env
 coverage
 coverage.json
@@ -9,8 +10,11 @@ typechain-types
 cache
 artifacts
 #starknet-artifacts
+starknet-artifacts/
 
 #ts
 out
 
 README.md.backup
+scripts/tests/
+contracts/ArgentX/

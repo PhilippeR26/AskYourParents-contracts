@@ -58,7 +58,7 @@
             "args": [
                 "run",
                 "--verbose",
-                "${workspaceFolder}/scripts/testCwallet.ts"
+                "${workspaceFolder}/scripts/tests/deployTest.ts"
             ],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "console": "integratedTerminal",
