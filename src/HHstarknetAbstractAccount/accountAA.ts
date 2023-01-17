@@ -92,7 +92,7 @@ export class OZaccountAA extends Account {
         ); // Compile and Check origin path of files
 
         const signer = generateKeys(options.privateKey);
-
+        console.log("public key Num =", BigInt(signer.publicKey).toString())
         const contractFactory = await hre.starknet.getContractFactory(contractPath);
         const constructor: StringMap = { ...constructorAA, publicKey: BigInt(signer.publicKey) };
         const contract = await contractFactory.deploy(

@@ -22,6 +22,10 @@ from starkware.cairo.common.cairo_secp.signature import verify_eth_signature_uin
 from openzeppelin.utils.constants.library import IACCOUNT_ID, IERC165_ID, TRANSACTION_VERSION
 from accountAA_contracts.ChildrenAA.v1_0_0.WalletAdministration import (
     children_account_super_admin_storage,
+    children_account_nb_admin_storage,
+    children_account_admin_addr_storage,
+    children_account_admin_ID_storage,
+    CAadmin,
 )
 
 //
@@ -65,11 +69,16 @@ namespace Account {
     func initializer{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         super_admin_address: felt, _public_key: felt
     ) {
+        // %{ print(f"***** initializer:_public_key =  {ids._public_key}") %}
         children_account_public_key_storage.write(_public_key);
         with_attr error_message("constructor : super_admin must not have 0x00 address.") {
             assert_not_zero(super_admin_address);
         }
         children_account_super_admin_storage.write(super_admin_address);
+        // CAadmin.add_admin(super_admin_address);
+        children_account_nb_admin_storage.write(1);
+        children_account_admin_addr_storage.write(1, super_admin_address);
+        children_account_admin_ID_storage.write(super_admin_address, 1);
         return ();
     }
 
@@ -109,7 +118,7 @@ namespace Account {
     }
 
     //
-    // Setters
+    // ******* Setters *******
     //
 
     func set_public_key{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
@@ -137,7 +146,10 @@ namespace Account {
         // But this implementation does, and it expects a (sig_r, sig_s) pair.
         let sig_r = signature[0];
         let sig_s = signature[1];
-
+        %{ print(f"***** is_valid_signature:hash =  {ids.hash}") %}
+        %{ print(f"***** is_valid_signature:_public_key =  {ids._public_key}") %}
+        %{ print(f"***** is_valid_signature:sig_r =  {ids.sig_r}") %}
+        %{ print(f"***** is_valid_signature:sig_s =  {ids.sig_s}") %}
         verify_ecdsa_signature(
             message=hash, public_key=_public_key, signature_r=sig_r, signature_s=sig_s
         );
@@ -251,8 +263,8 @@ namespace Account {
             to=[call_array].to,
             selector=[call_array].selector,
             calldata_len=[call_array].data_len,
-            calldata=calldata + [call_array].data_offset
-            );
+            calldata=calldata + [call_array].data_offset,
+        );
         // parse the remaining calls recursively
         _from_call_array_to_call(
             call_array_len - 1, call_array + AccountCallArray.SIZE, calldata, calls + Call.SIZE

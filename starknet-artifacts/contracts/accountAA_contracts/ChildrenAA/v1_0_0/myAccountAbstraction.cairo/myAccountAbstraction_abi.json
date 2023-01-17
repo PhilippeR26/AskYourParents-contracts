@@ -102,7 +102,7 @@
     },
     {
         "inputs": [],
-        "name": "get_super_admin",
+        "name": "getSuperAdmin",
         "outputs": [
             {
                 "name": "super_admin_addr",
@@ -119,7 +119,7 @@
                 "type": "felt"
             }
         ],
-        "name": "is_admin",
+        "name": "isAdmin",
         "outputs": [
             {
                 "name": "is_admin",
@@ -147,7 +147,7 @@
                 "type": "felt"
             }
         ],
-        "name": "add_admin",
+        "name": "addAdmin",
         "outputs": [],
         "type": "function"
     },
@@ -171,6 +171,22 @@
             {
                 "name": "isValid",
                 "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getListAdmin",
+        "outputs": [
+            {
+                "name": "array_len",
+                "type": "felt"
+            },
+            {
+                "name": "array",
+                "type": "felt*"
             }
         ],
         "stateMutability": "view",
@@ -267,7 +283,7 @@
     },
     {
         "inputs": [],
-        "name": "remove_self_admin",
+        "name": "removeSelfAdmin",
         "outputs": [],
         "type": "function"
     },
@@ -278,7 +294,7 @@
                 "type": "felt"
             }
         ],
-        "name": "remove_admin",
+        "name": "removeAdmin",
         "outputs": [],
         "type": "function"
     }

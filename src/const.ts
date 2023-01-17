@@ -1,6 +1,6 @@
 
 // Address of myUniversalDeployer in local starknet-devnet :
-export const addrDeployerDevnet: string = "0x1364729ed6dfbbd50931ec0d350ba3725c633962a8afaa8ee8a5b538365abc0";
+export const addrDeployerDevnet: string = "0x27ef80a90846b2f289553c6ccd67b03035b7742ded934613980595c3051cea7";
 // Address of myUniversalDeployer in starknet-alpha testnet :
 export const addrDeployerAlpha: string = "0x56aa440b1cbe73b5908286d602d666598d2aa3a6e109bf5a5d104e41bc5fce1";
 // Address of myUniversalDeployer in starknet-alpha 2 testnet :
@@ -24,16 +24,17 @@ export const addrAdminAlpha2: string = "0x230276d1d2ff1c6d6e038da30940ceb5da6a0c
 
 
 // Contract class hash of ECU contract :
-export const classHashECU: string = "0x25143c35e179a296eb1585d7961ef207d4d62379de029967663dc530736635d";
+export const classHashECU: string = "0x795be772eab12ee65d5f3d9e8922d509d6672039978acc98697c0a563669e8";
 // Address of ECU in local starknet-devnet :
-export const addrECUdevnet: string = "0x596f4a66552b536207fdb9f62c495aafef38c3d1b3e48ec55d395bcca48350c";
+export const addrECUdevnet: string = "0x77dcf954011175d60820091534dbef39a58a7a94bd75cb182c4270193b04a19";
 // Address of ECU in starknet-alpha 1&2 testnet :
 export const addrECUalpha: string = "0x7a50dbaeabe43b492f4e848970f6f6fcc3d0a23b8119683bc733d04e2918394";
 export const addrECUalpha2: string = "0x1c3abfd28665b53e55f4539cdd08df13bf8aab3687bd7b61cc2ffa9ff62f3f9";
 
-
+// class Hash of children account contract
+export const classHashChildrenContract: string = "0x1d926edb81b7ef0efcb67dd4558a6dffc2bf31a8bc9c3fe7832a5ec3d1b70da";
 // Address of Children account in local devnet :
-export const addrChildrenDevnet: string = "0x96784549d525d330f873e186df1713b7559c2dbc56f05bb24ddd3587f54056";
+export const addrChildrenDevnet: string = "0x24a11ccc14c28d731074c0482dad66e392277ae5c8e52b55fcaecb74a52b354";
 // Address of Children account in Starknet Alpha 1&2 testnet :
 export const addrChildrenAlpha: string = "0x62be1cdaf0bf1e2693ea336560fe3d75d34d2b0784f038ad64ae4e07cebe52a";
 export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c4350432df2d0c4893adfb767db620b7b8b";
@@ -42,14 +43,35 @@ export const addrChildrenAlpha2: string = "0x395d4bb559c2d1fc4f73dc117b31c435043
 // ETH on alpha testnet : 
 export const addrETHalpha: string = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
 // ETH on local devnet : 
-export const addrETHdevnet: string = addrETHalpha; // valid from devnet 0.4.0
+export const addrETHdevnet = addrETHalpha; // valid from devnet 0.4.0
 // ETH on alpha2 testnet : 
-export const addrETHalpha2: string = addrETHalpha;
+export const addrETHalpha2 = addrETHalpha;
+export const OZproxyClassHash = "0x0601407cf04ab1fbab155f913db64891dc749f4343bc9e535bd012234a46dc61";
 
 // ArgentX Acc1devnet address : 
-export const addrArgentXWallet: string = "0x045f825D68f5253A546f3E20392cA7159a9B1CABb49EC4285098901a2714d5a4"
+export const addrArgentXWallet: string = "0x045f825D68f5253A546f3E20392cA7159a9B1CABb49EC4285098901a2714d5a4";
 // Braavos account 1 wallet address :
-export const addrBraavosWallet: string = "0x00f92678a891046ae0789b9eb8dafde2669a6eb1bca493fb7d9b2bdd54171c18"
+export const addrBraavosWallet: string = "0x04b497639c3348AbF6E5761094c1C8a28616A273598e38Fd5ab41C3d4277c295";
+// ArgentX testnet2 address :
+export const addrArgentXWalletA2: string = "0x04b497639c3348AbF6E5761094c1C8a28616A273598e38Fd5ab41C3d4277c295"
+
+// ArgentX testnet1 account 4 address :
+export const addrArgentXWallet4_A1: string = "0x065A822fBeE1Ae79e898688b5A4282Dc79E0042cbEd12F6169937FdDb4c26641";
+
+// ArgentX testnet1 account 5 address :
+export const addrArgentXWallet5_A1: string = "0x026D95914DBf0A27ABB4121a3c365b72D73624Fa7C171A20f4410BCA8FAe23F2";
+
+// ArgentX testnet1 account 6 address :
+export const addrArgentXWallet6_A1: string = "0x045f825D68f5253A546f3E20392cA7159a9B1CABb49EC4285098901a2714d5a4";
+// ArgentX testnet2 account 1 address :
+
+export const addrArgentXWallet1_A2: string = "0x04b497639c3348AbF6E5761094c1C8a28616A273598e38Fd5ab41C3d4277c295";
+
+// ArgentX testnet2 account 2 address :
+export const addrArgentXWallet2_A2: string = "0x073D6C92076B6F449e660121bfd4A89d3B3254fD426Ea08E7612669e50eaeC5c";
+
+// ArgentX testnet2 account 3 address :
+export const addrArgentXWallet3_A2: string = "0x00d8161053A6958FF1f7fBE3BCaDfE8CeFB7f9796b20e97a8137b21173F8DcFC";
 
 
 

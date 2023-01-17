@@ -9,7 +9,7 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin,
 from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.uint256 import Uint256
 from starkware.cairo.common.memcpy import memcpy
-from starkware.cairo.common.math import split_felt, assert_not_zero, assert_not_equal
+from starkware.cairo.common.math import split_felt, assert_not_zero, assert_not_equal, assert_le
 from starkware.cairo.common.math_cmp import is_le_felt
 from starkware.cairo.common.bool import TRUE, FALSE
 from starkware.starknet.common.syscalls import (
@@ -41,16 +41,16 @@ func children_account_super_admin_storage() -> (super_admin_addr: felt) {
 }
 
 @storage_var
-func children_account_admin_list_storage(admin_addr: felt) -> (is_admin: felt) {
+func children_account_admin_addr_storage(admin_ID: felt) -> (admin_addr: felt) {
 }
 
 @storage_var
-func children_account_addr_whitelist_storage(adr: felt) -> (is_whitelisted: felt) {
+func children_account_admin_ID_storage(admin_addr: felt) -> (admin_ID: felt) {
 }
 
-//
-// Structs
-//
+@storage_var
+func children_account_nb_admin_storage() -> (nb_admin: felt) {
+}
 
 // /////////////////////////////////////////
 namespace CAadmin {
@@ -109,58 +109,108 @@ namespace CAadmin {
     func get_is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
         user_address: felt
     ) -> (is_admin: felt) {
-        return children_account_admin_list_storage.read(user_address);
+        let (id) = children_account_admin_ID_storage.read(user_address);
+        if (id == 0) {
+            return (is_admin=FALSE);
+        } else {
+            return (is_admin=TRUE);
+        }
+    }
+
+    // get the number of admins.
+    @view
+    func get_nb_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+        nb_admin: felt
+    ) {
+        let (nb_administrator) = children_account_nb_admin_storage.read();
+        return (nb_admin=nb_administrator);
+    }
+
+    // Provide the ID storage of an administrator address.
+    // 0 if not registered.
+    @view
+    func get_admin_id{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_address: felt
+    ) -> (id: felt) {
+        let (id) = children_account_admin_ID_storage.read(admin_address);
+        return (id=id);
     }
 
     //
-    // Setters
+    // ******** VIEW ***********
+    //
+
+    // get an array of the list of admin addresses.
+    @view
+    func get_list_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+        admin_array_len: felt, admin_array: felt*
+    ) {
+        alloc_locals;
+        let (nbre_admin) = children_account_nb_admin_storage.read();
+        let (list_admin) = alloc();
+        _get_admins(0, nbre_admin, list_admin);
+        return (admin_array_len=nbre_admin, admin_array=list_admin);
+    }
+
+    //
+    // ****** Setters ********
     //
 
     // Add an administror (only for super admnistrator)
-    func set_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        addr_admin: felt
+    func add_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_address: felt
     ) {
-        with_attr error_message("***error_set_admin:_Only_for_super_administrator") {
+        with_attr error_message("***error_add_admin:_Only_for_super_administrator") {
             assert_only_super_admin();
         }
-        // with_attr error_message("***error set_admin:requester is not administrator.") {
-        //     assert_only_admin();
-        // }
-        with_attr error_message("***error_set_admin:_new_admin_is_the_zero_address.") {
-            assert_not_zero(addr_admin);
+
+        with_attr error_message("***error_add_admin:_new_admin_is_the_zero_address.") {
+            assert_not_zero(admin_address);
         }
-        children_account_admin_list_storage.write(addr_admin, TRUE);
+        let (exists) = children_account_admin_ID_storage.read(admin_address);
+        with_attr error_message("***error_add_admin:_address_already_registered.") {
+            assert exists = 0;
+        }
+        let (pos) = children_account_nb_admin_storage.read();
+        children_account_nb_admin_storage.write(pos + 1);
+        children_account_admin_addr_storage.write(pos + 1, admin_address);
+        children_account_admin_ID_storage.write(admin_address, pos + 1);
         let (caller_address) = get_caller_address();
-        AddAdmin.emit(caller_address, addr_admin);
+        AddAdmin.emit(caller_address, admin_address);
         return ();
     }
     //
-    // Business logic
+    // **** Business logic *****
     //
 
-    // Remove an administror (only for super admnistrator)
-    func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
-        addr_admin: felt
+    // super admin remove an administrator (by id)
+    @external
+    func remove_admin_id{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_id: felt
     ) {
-        with_attr error_message("***error_set_admin:requester_is_not_super-administrator.") {
+        alloc_locals;
+
+        with_attr error_message(
+                "***error_remove_admin_id : requester_is_not_super-administrator.") {
             assert_only_super_admin();
         }
-        with_attr error_message("***error_set_admin:addr_to_remove_is_not administrator.") {
-            let (is_admin) = get_is_admin(addr_admin);
-            assert is_admin = TRUE;
-        }
-        // with_attr error_message(
-        //         "***error set_admin:requester is self removing its administrator right.") {
-        let (caller_address) = get_caller_address();
-        // assert_not_equal(caller, addr_admin);
-        // }
-        children_account_admin_list_storage.write(addr_admin, FALSE);
-        RemoveAdmin.emit(caller_address, addr_admin);
+        _remove_admin_id(admin_id);
+        return ();
+    }
+
+    // super admin remove an administrator (by address)
+    @external
+    func remove_admin_addr{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_addr: felt
+    ) {
+        let (id) = children_account_admin_ID_storage.read(admin_addr);
+        remove_admin_id(id);
         return ();
     }
 
     // self remove of an administror (not for super administrator)
-    func _remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+    func remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+        alloc_locals;
         let (caller_address) = get_caller_address();
         with_attr error_message(
                 "***error_remove_self_admin:_can't_remove_admin_with_the_zero_address.") {
@@ -170,11 +220,66 @@ namespace CAadmin {
         with_attr error_message("***error_remove_self_admin:_caller_is_not_admin.") {
             assert is_admin = TRUE;
         }
-        children_account_admin_list_storage.write(caller_address, FALSE);
-        %{ print(f"***** remove_self_admin:caller_address =  {ids.caller_address}") %}
+        let (caller_id) = children_account_admin_ID_storage.read(caller_address);
+        _remove_admin_id(caller_id);
+        // %{ print(f"***** remove_self_admin:caller_address =  {ids.caller_address}") %}
         RemoveAdmin.emit(caller_address, caller_address);
         return ();
     }
 
+    // ************ INTERNALS ****************
+
+    // remove an admin (by ID)
+    func _remove_admin_id{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_id: felt
+    ) {
+        alloc_locals;
+        let (addr) = children_account_admin_addr_storage.read(admin_id);
+        with_attr error_message("***error_remove_admin_id : addr_to_remove_is_not administrator.") {
+            let (is_admin) = get_is_admin(addr);
+            assert is_admin = TRUE;
+        }
+        let (max) = children_account_nb_admin_storage.read();
+        with_attr error_message("***error_remove_admin: ID out of range.") {
+            assert_le(admin_id, max);  // id must exists
+            assert_not_zero(admin_id);  // not used
+            assert_not_equal(admin_id, 1);  // reserved for super-administrator
+        }
+        children_account_admin_ID_storage.write(addr, 0);
+        _del_admin(max - 1, admin_id);
+        children_account_admin_addr_storage.write(max, 0);
+        children_account_nb_admin_storage.write(max - 1);
+
+        let (caller_address) = get_caller_address();
+        RemoveAdmin.emit(caller_address, addr);
+        return ();
+    }
+
+    // recursive for list of admins
+    func _get_admins{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        admin_id: felt, admin_array_len: felt, admin_array: felt*
+    ) {
+        if (admin_id == admin_array_len) {
+            return ();
+        }
+        let (administrator) = children_account_admin_addr_storage.read(admin_id + 1);
+        assert admin_array[admin_id] = administrator;
+        _get_admins(admin_id + 1, admin_array_len, admin_array);
+        return ();
+    }
+
+    // recursive for delete of an admin
+    func _del_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+        pos: felt, admin_id: felt
+    ) {
+        if (pos == admin_id - 1) {
+            return ();
+        }
+        _del_admin(pos - 1, admin_id);
+        let (addr) = children_account_admin_addr_storage.read(pos + 1);
+        children_account_admin_addr_storage.write(pos, addr);
+        children_account_admin_ID_storage.write(addr, pos);
+        return ();
+    }
     //
 }

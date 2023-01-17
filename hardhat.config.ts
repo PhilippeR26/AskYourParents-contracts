@@ -1,6 +1,6 @@
 import { HardhatUserConfig } from "hardhat/types";
 import "@shardlabs/starknet-hardhat-plugin";
-import "./src/HHstarknetAbstractAccount";
+//import "./src/HHstarknetAbstractAccount";
 
 
 // module.exports = {

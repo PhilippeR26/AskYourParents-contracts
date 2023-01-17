@@ -21,26 +21,20 @@ async function main() {
             // Recovery of data of predeployed wallets in devnet
             const ListOfWallet = await starknet.devnet.getPredeployedAccounts();
             // Define Parent Wallet.
-            accountParent = await starknet.getAccountFromAddress(
-                ListOfWallet[0].address,
-                ListOfWallet[0].private_key,
-                "OpenZeppelin"
-            );
+            accountParent = await starknet.OpenZeppelinAccount.getAccountFromAddress(ListOfWallet[0].address, ListOfWallet[0].private_key);
             break;
         case "alpha"://testnet alpha goerli ETH
             // Recovery of data of Parent predeployed wallet in Alpha testnet
-            accountParent = await starknet.getAccountFromAddress(
+            accountParent = await starknet.OpenZeppelinAccount.getAccountFromAddress(
                 addrParentAlpha,
-                ensureEnvVar("OZ_PARENT_ACCOUNT_PRIVATE_KEY"),
-                "OpenZeppelin"
+                ensureEnvVar("OZ_PARENT_ACCOUNT_PRIVATE_KEY")
             );
             break;
         case "alpha-goerli-2"://testnet alpha 2 goerli ETH
             // Recovery of data of Parent predeployed wallet in Alpha testnet
-            accountParent = await starknet.getAccountFromAddress(
+            accountParent = await starknet.OpenZeppelinAccount.getAccountFromAddress(
                 addrParentAlpha2,
-                ensureEnvVar("OZ_PARENT_ACCOUNT2_PRIVATE_KEY"),
-                "OpenZeppelin"
+                ensureEnvVar("OZ_PARENT_ACCOUNT2_PRIVATE_KEY")
             );
             break;
         default:
@@ -58,35 +52,50 @@ async function main() {
     console.log("✅ ERC20 ECU class hash contract :", classHashECU, "\nCopy/Paste this class hash in src/const.ts, in varName classHashECU\n");
 
     // deploy .... deployer !
-    const deployerFactory = await starknet.getContractFactory("contracts/deployer/myUniversalDeployer");
-    let deployerContract: StarknetContract;
-    switch (whichNetwork) {
-        case "devnet":
-            deployerContract = await deployerFactory.getContractAt(addrDeployerDevnet);
-            break;
-        case "alpha"://testnet alpha goerli ETH
-            deployerContract = await deployerFactory.getContractAt(addrDeployerAlpha);
-            break;
-        case "alpha-goerli-2"://testnet alpha 2 goerli ETH
-            deployerContract = await deployerFactory.getContractAt(addrDeployerAlpha2);
-            break;
-    }
+    // const deployerFactory = await starknet.getContractFactory("contracts/deployer/myUniversalDeployer");
+    // let deployerContract: StarknetContract;
+    // switch (whichNetwork) {
+    //     case "devnet":
+    //         deployerContract = await deployerFactory.getContractAt(addrDeployerDevnet);
+    //         break;
+    //     case "alpha"://testnet alpha goerli ETH
+    //         deployerContract = await deployerFactory.getContractAt(addrDeployerAlpha);
+    //         break;
+    //     case "alpha-goerli-2"://testnet alpha 2 goerli ETH
+    //         deployerContract = await deployerFactory.getContractAt(addrDeployerAlpha2);
+    //         break;
+    // }
 
     // 2. Deploy instance of ECU class contract
-    const initialS: Uint256 = bnToUint256(10000);
+    const initialS: Uint256 = bnToUint256(10000); // 100 ECU avec 2 décimales
     //Constructor ERC20 ECU mintable : name: felt, symbol: felt, decimals: felt, initial_supply: Uint256, recipient: felt, owner: felt
-    const constructorECU: StringMap = { class_hash: BigInt(classHashECU), params: [starknet.shortStringToBigInt("ECU token"), starknet.shortStringToBigInt("ECU"), 2n, initialS.low, initialS.high, accountParent.address, accountParent.address] };
-    const estimatedFee = await accountParent.estimateFee(
-        deployerContract,
-        "deploy_contract",
-        constructorECU
-    );
-    const deploymentHash = await accountParent.invoke(deployerContract, "deploy_contract", constructorECU, { maxFee: estimatedFee.amount * 2n });
+    //const constructorECU2: StringMap={lis:"ert",ert:234};
+    // name: felt, symbol: felt, decimals: felt, initial_supply: Uint256, recipient: felt, owner: felt
+    const constructorECU: StringMap = {
+        name: starknet.shortStringToBigInt("ECU token"),
+        symbol: starknet.shortStringToBigInt("ECU"),
+        decimals: 2n,
+        initial_supply: initialS,
+        recipient: accountParent.address,
+        owner: accountParent.address
+    };
+
+    // const estimatedFee = await accountParent.estimateFee(
+    //     deployerContract,
+    //     "deploy_contract",
+    //     constructorECU
+    // );
+    //const contractECUfactory = await starknet.getContractFactory("MyContract");
+    const contractECU = await accountParent.deploy(contractFactoryERC20, constructorECU, { maxFee: 9_000_000_000_000_000, salt: "0x00" });
+
+
+
 
     // 3. Recover ECU instance address
-    const receipt = await starknet.getTransactionReceipt(deploymentHash);
-    const deploymentEvent = receipt.events.filter(i => i.from_address === deployerContract.address)[0];//catch first event emited by the deployer
-    const ECUdeploymentAddress = deploymentEvent.data[0];
+    // const receipt = await starknet.getTransactionReceipt(deploymentHash);
+    // const deploymentEvent = receipt.events.filter(i => i.from_address === deployerContract.address)[0];//catch first event emited by the deployer
+    // const ECUdeploymentAddress = deploymentEvent.data[0];
+    const ECUdeploymentAddress = contractECU.address;
     console.log("✅ ERC20 ECU instance deployed to:", ECUdeploymentAddress, "\nCopy/Paste this address in src/const.ts, in varName", whichNetwork === "devnet" ? "addrECUdevnet" : whichNetwork === "alpha" ? "addrECUalpha" : "addrECUalpha2", "\n")
 }
 

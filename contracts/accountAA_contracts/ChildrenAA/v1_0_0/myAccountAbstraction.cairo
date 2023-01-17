@@ -45,7 +45,7 @@ func supportsInterface{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_che
 
 // get super-administrator address
 @view
-func get_super_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+func getSuperAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
     super_admin_addr: felt
 ) {
     let sa_address: felt = CAadmin.get_super_admin();
@@ -54,7 +54,7 @@ func get_super_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check
 
 // is an administrator address ?
 @view
-func is_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
+func isAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     user_address: felt
 ) -> (is_admin: felt) {
     let (isadmin) = CAadmin.get_is_admin(user_address);
@@ -74,8 +74,8 @@ func setPublicKey{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_pt
 }
 
 @external
-func add_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
-    CAadmin.set_admin(address);
+func addAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
+    CAadmin.add_admin(address);
     return ();
 }
 
@@ -89,6 +89,15 @@ func isValidSignature{
 }(hash: felt, signature_len: felt, signature: felt*) -> (isValid: felt) {
     let (isValid: felt) = Account.is_valid_signature(hash, signature_len, signature);
     return (isValid=isValid);
+}
+
+// get list of administrators
+@view
+func getListAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (
+    array_len: felt, array: felt*
+) {
+    let (array_len, array) = CAadmin.get_list_admin();
+    return (array_len=array_len, array=array);
 }
 
 @external
@@ -105,6 +114,10 @@ func __validate_declare__{
     syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, ecdsa_ptr: SignatureBuiltin*, range_check_ptr
 }(class_hash: felt) {
     let (tx_info) = get_tx_info();
+    %{ print(f"***** __validate_declare__:tx_info.transaction_hash =  {ids.tx_info.transaction_hash}") %}
+    %{ print(f"***** __validate_declare__:tx_info.signature[0] =  {ids.tx_info.signature[0]}") %}
+    %{ print(f"***** __validate_declare__:tx_info.signature[1] =  {ids.tx_info.signature[1]}") %}
+
     Account.is_valid_signature(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature);
     return ();
 }
@@ -135,14 +148,14 @@ func __execute__{
 
 // remove self as administrator
 @external
-func remove_self_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
-    CAadmin._remove_self_admin();
+func removeSelfAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() {
+    CAadmin.remove_self_admin();
     return ();
 }
 
-// remove administrator (only for admin)
+// remove administrator (only for superadmin)
 @external
-func remove_admin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
-    CAadmin.remove_admin(address);
+func removeAdmin{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(address: felt) {
+    CAadmin.remove_admin_addr(address);
     return ();
 }
