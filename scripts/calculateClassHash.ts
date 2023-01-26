@@ -26,10 +26,9 @@ async function main() {
             // Recovery of data of predeployed wallets in devnet
             const ListOfWallet = await starknet.devnet.getPredeployedAccounts();
             // Define Parent Wallet.
-            accountParent = await starknet.getAccountFromAddress(
+            accountParent = await starknet.OpenZeppelinAccount.getAccountFromAddress(
                 ListOfWallet[0].address,
-                ListOfWallet[0].private_key,
-                "OpenZeppelin"
+                ListOfWallet[0].private_key
             );
             break;
 

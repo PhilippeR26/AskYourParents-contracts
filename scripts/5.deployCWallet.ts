@@ -8,7 +8,7 @@ import { Account, OZaccountAA } from "../src/HHstarknetAbstractAccount/accountAA
 import * as dotenv from 'dotenv';
 import { addrParentAlpha, addrParentAlpha2 } from "../src/const";
 import axios from "axios";
-import { MyAccountSimple } from "./AAaccount";
+import { MyAccountChildren } from "./AAaccount";
 import { generateKeys } from "@shardlabs/starknet-hardhat-plugin/dist/src/account-utils";
 import { StarknetContractFactory } from "hardhat/types";
 dotenv.config({ path: "../.env" });
@@ -20,7 +20,7 @@ async function main() {
     console.log("\nworking in network :", LogC.fg.yellow, whichNetwork, LogC.reset);
     // deploy Children Account
     let parentAccountAddress: string;
-    let myChildrenAccount: MyAccountSimple;
+    let myChildrenAccount: MyAccountChildren;
     let contractFactory: StarknetContractFactory;
     switch (whichNetwork) {
         case "devnet":
@@ -28,7 +28,7 @@ async function main() {
             parentAccountAddress = ListOfWallet[0].address;
             const parentAccount = await starknet.OpenZeppelinAccount.getAccountFromAddress(ListOfWallet[0].address, ListOfWallet[0].private_key);
 
-            contractFactory = await hre.starknet.getContractFactory(MyAccountSimple.MYACCOUNTPATH);
+            contractFactory = await hre.starknet.getContractFactory(MyAccountChildren.MYACCOUNTPATH);
             console.log("declaration of contract account...");
             const classHash = await parentAccount.declare(contractFactory);
             console.log("classHash =", classHash);
@@ -47,7 +47,7 @@ async function main() {
                 BigInt(pubKey).toString()
             ];
 
-            myChildrenAccount = await MyAccountSimple.createAccount(constructorAccount, { classH: classHash, salt: pubKey, privateKey: privKey });
+            myChildrenAccount = await MyAccountChildren.createAccount(constructorAccount, { classH: classHash, salt: pubKey, privateKey: privKey });
             //console.log("myAccount.address =", myChildrenAccount.address);
             // fund the account before deploying it
             const { data: answer } = await axios.post('http://127.0.0.1:5050/mint', { "address": myChildrenAccount.address, "amount": 50_000_000_000_000_000_000, "lite": true }, { headers: { "Content-Type": "application/json" } });
@@ -78,10 +78,10 @@ async function main() {
     //const ChildrenAAFactory = await starknet.getContractFactory("contracts/accountAA_contracts/ChildrenAA/v1_0_0/myAccountAbstraction.cairo");
 
     // test ouverture compte existant
-    const existingChildrenAccount = await MyAccountSimple.getAccountFromAddress(myChildrenAccount.address, myChildrenAccount.privateKey);
+    const existingChildrenAccount = await MyAccountChildren.getAccountFromAddress(myChildrenAccount.address, myChildrenAccount.privateKey);
 
     const existingChildrenContract = contractFactory.getContractAt(myChildrenAccount.address);
-    const { super_admin_addr: addrBigInt } = await existingChildrenContract.call("get_super_admin");
+    const { super_admin_addr: addrBigInt } = await existingChildrenContract.call("getSuperAdmin");
     const childrenAccountSuperAdminAddress: string = "0x" + addrBigInt.toString(16);
 
     // console.log("✅ Children wallet address=", myChildrenAccount.address, "\n  Copy/Paste this address in src/const.ts, in varName", whichNetwork === "alpha-goerli-2" ? "addrChildrenAlpha2" : whichNetwork === "alpha" ? "addrChildrenAlpha" : "addrChildrenDevnet");

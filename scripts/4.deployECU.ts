@@ -1,12 +1,13 @@
 // deploy the ERC20 ECU token to the current hardhat starknet network (devnet or alpha).
 // 100 ECU are minted to the parent wallet.
+// launch with npx hardhat run scripts/4.deployECU.ts
 import { Uint256, bnToUint256 } from "starknet/dist/utils/uint256";
 import { starknet } from "hardhat";
 import type { Account, StarknetContract, StringMap } from "hardhat/types/runtime";
 import hre from "hardhat";
 import { adaptAddress, ensureEnvVar } from "../src/util";
 import LogC from "../src/logColors";
-import { addrDeployerAlpha, addrDeployerAlpha2, addrDeployerDevnet, addrParentAlpha, addrParentAlpha2 } from "../src/const";
+import { addrArgentXWallet1_devnet, addrDeployerAlpha, addrDeployerAlpha2, addrDeployerDevnet, addrParentAlpha, addrParentAlpha2 } from "../src/const";
 import * as dotenv from 'dotenv';
 dotenv.config({ path: "../.env" });
 
@@ -76,8 +77,8 @@ async function main() {
         symbol: starknet.shortStringToBigInt("ECU"),
         decimals: 2n,
         initial_supply: initialS,
-        recipient: accountParent.address,
-        owner: accountParent.address
+        recipient: addrArgentXWallet1_devnet,
+        owner: addrArgentXWallet1_devnet
     };
 
     // const estimatedFee = await accountParent.estimateFee(
