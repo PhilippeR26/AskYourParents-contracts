@@ -26,7 +26,7 @@ export const addrAdminAlpha2: string = "0x230276d1d2ff1c6d6e038da30940ceb5da6a0c
 // Contract class hash of ECU contract :
 export const classHashECU: string = "0x795be772eab12ee65d5f3d9e8922d509d6672039978acc98697c0a563669e8";
 // Address of ECU in local starknet-devnet :
-export const addrECUdevnet: string = "0x6a76a42ce6e435c56a3613461f32111e28a328f8c954622796d9e1a0f7ae223";
+export const addrECUdevnet: string = "0x77dcf954011175d60820091534dbef39a58a7a94bd75cb182c4270193b04a19";
 // Address of ECU in starknet-alpha 1&2 testnet :
 export const addrECUalpha: string = "0x7a50dbaeabe43b492f4e848970f6f6fcc3d0a23b8119683bc733d04e2918394";
 export const addrECUalpha2: string = "0x1c3abfd28665b53e55f4539cdd08df13bf8aab3687bd7b61cc2ffa9ff62f3f9";

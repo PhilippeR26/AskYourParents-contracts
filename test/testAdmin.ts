@@ -1,3 +1,6 @@
+// for children administrtors functions
+// launch with : npx hardhat test test/testAdmin.ts
+
 import { expect } from "chai";
 import hre, { starknet } from "hardhat";
 import { StarknetContract, StarknetContractFactory } from "hardhat/types/runtime";
@@ -14,8 +17,6 @@ import { ArgentAccount, OpenZeppelinAccount } from "@shardlabs/starknet-hardhat-
 import BN from "bn.js";
 dotenv.config({ path: ".env" });
 
-// Launch after 
-// launch with : npx hardhat test test/testAdmin.ts
 
 describe("Test of Children Account-administrators :", function () {
     this.timeout(TIMEOUT);

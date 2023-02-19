@@ -19,7 +19,7 @@ async function main() {
     switch (whichNetwork) {
         case "devnet":
             // address to feed 👇 👇
-            const caAddress = "0x00f92678a891046ae0789b9eb8dafde2669a6eb1bca493fb7d9b2bdd54171c18";
+            const caAddress = "0x0592d37DF7702c411BD72b577687A7F7c9759362cDDe76299e7c0865f47a883C";
             //
             const ETHaddress = addrETHdevnet;
             const initialBalance = await getETHinWallet(caAddress, ETHaddress);
