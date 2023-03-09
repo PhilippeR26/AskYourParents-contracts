@@ -56,7 +56,7 @@ async function main() {
         merkle_root: "0x1497b72c82b80429799fe65afa3edc5492ee848deba69418c474504792756a0"
     };
 
-    const contract = await accountParent.deploy(contractFactory, constructor, { maxFee: 9_000_000_000_000_000, salt: "0x00" });
+    const contract = await accountParent.deploy(contractFactory, constructor, { maxFee: 9_000_000_000_000_000, salt: "0x02" });
 
 
 

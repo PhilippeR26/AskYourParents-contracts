@@ -78,24 +78,18 @@ func hash_proof{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}
     return (res=result);
 }
 
-// example of use of verify_proof()
 @external
 func request_airdrop{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(
     address: felt, amount: felt, proof_len: felt, proof: felt*
 ) -> () {
     let (h0) = get_hash_pedersen(0, address);
-    %{ print(f"***** request_airdrop:h0 = {hex(ids.h0)}") %}
-    %{ print(f"***** request_airdrop:amount =  {hex(ids.amount)}") %}
     let (h1) = get_hash_pedersen(h0, amount);
-    %{ print(f"***** request_airdrop:h1 = {hex(ids.h1)}") %}
-    let (hashed_leaf) = get_hash_pedersen(h1, 2);  // 2= lenght of data (address & amount)
-    %{ print(f"***** request_airdrop:h2 = {hex(ids.hashed_leaf)}") %}
-
+     let (hashed_leaf) = get_hash_pedersen(h1, 2);  // 2= length of data (address & amount)
     let (is_valid_request) = verify_proof(hashed_leaf, proof_len, proof);
     assert is_valid_request = TRUE;  // revert if not valid
     // Airdop
-    // Perform here your transfert of ERC20 or ERC721, using address & amount.
-    // Do not forget to store this address in a storage of addresses already airdroped,
+    // Do not forget to first store this address in a storage of addresses already airdropped,
     // to be sure to perform the airdrop only once per address.
+    // Perform here your transfer of ERC20 or ERC721, using address & amount.
     return ();
 }
